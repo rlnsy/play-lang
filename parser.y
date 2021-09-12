@@ -6,13 +6,24 @@
 	extern char *yytext;
 %}
 
+%token DEF_RBND
+%token BY
 %token STR
 
 %%
 
-program : program STR	{ printf("%s\n", yytext); }
-	|
-	;
+plays:	plays playl
+		|
+		;
+
+playl:		play '\n'
+		;
+
+play:		DEF_RBND BY player	{ printf("def. rebound\n"); }
+		;
+
+player:        STR			{ printf("player: %s\n", yytext); }
+		;
 
 %%
 

@@ -11,8 +11,14 @@ c	[^ \t\n]
 %%
 	/* RULES */
 
-{c}+	return STR;
-{wsc}+	; /* skip all whitespace */
+\n			return *yytext;
+
+[\(\)\.; \t]		; /* skip */
+
+[dD]efensive\ rebound	return DEF_RBND;
+by			return BY;
+
+{c}+			return STR;
 
 %%
 	/* SUBROUTINES */
