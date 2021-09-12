@@ -1,0 +1,5 @@
+y.tab.*
+lex.yy.c
+lexer
+parser
+.vscode
