@@ -3,6 +3,8 @@
 extern int yylex();
 extern char *yytext;
 
+int yylval;
+
 int main()
 {
 	while (yylex()) {
