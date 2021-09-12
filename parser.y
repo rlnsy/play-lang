@@ -25,15 +25,15 @@ plays:	    plays playl
 playl:      play '\n'
             ;
 
-qnum:       NUM                 { printf("quarter: %d\n", yyval); }
+qnum:       NUM                     { printf("quarter: %d\n", yyval); }
             ;
 
-play:       Q_START qnum Q_QTR
-            | Q_END qnum Q_QTR
-            | DEF_RBND BY player
+play:       Q_START qnum Q_QTR      { printf("START\n"); }
+            | Q_END qnum Q_QTR      { printf("END\n");}
+            | DEF_RBND BY player    { printf("Def. rebound\n"); }
             ;
 
-player:     STR                 { printf("player: %s\n", yytext); }
+player:     STR                     { printf("player: %s\n", yytext); }
             ;
 
 %%
