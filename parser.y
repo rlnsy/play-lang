@@ -12,18 +12,18 @@
 
 %%
 
-plays:	plays playl
-		|
-		;
+plays:	    plays playl
+            |
+            ;
 
-playl:		play '\n'
-		;
+playl:      play '\n'
+            ;
 
-play:		DEF_RBND BY player	{ printf("def. rebound\n"); }
-		;
+play:       DEF_RBND BY player  { printf("def. rebound\n"); }
+            ;
 
-player:        STR			{ printf("player: %s\n", yytext); }
-		;
+player:     STR                 { printf("player: %s\n", yytext); }
+            ;
 
 %%
 

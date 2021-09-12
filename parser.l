@@ -1,27 +1,27 @@
-	/* DEFINITIONS */
+            /* DEFINITIONS */
 %{
-	#include "y.tab.h"
+    #include "y.tab.h"
 %}
 
-	/* whitespace character */
-wsc 	[ \t\n]
-	/* non-whitespace character */
-c	[^ \t\n]
+    /* whitespace character */
+wsc     [ \t\n]
+    /* non-whitespace character */
+c       [^ \t\n]
 
 %%
-	/* RULES */
+               /* RULES */
 
-\n			return *yytext;
+\n                      return *yytext;
 
-[\(\)\.; \t]		; /* skip */
+[\(\)\.; \t]            ; /* skip */
 
-[dD]efensive\ rebound	return DEF_RBND;
-by			return BY;
+[dD]efensive\ rebound   return DEF_RBND;
+by                      return BY;
 
-{c}+			return STR;
+{c}+                    return STR;
 
 %%
-	/* SUBROUTINES */
+            /* SUBROUTINES */
 
 int yywrap(void)
 {
