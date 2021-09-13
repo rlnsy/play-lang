@@ -76,7 +76,7 @@ qnum:       NUM                                             { printf("quarter: %
 play:       clockevt
             | rebound                                       { printf("rebound\n"); }
             | jmpblldesc                                  { printf("Jump ball\n"); }
-            | shotdesc
+            | shotattmpt
             | turnover
             | foul
             ;
@@ -103,12 +103,19 @@ rebounder:  player
 rebound:    rbndtype BY rebounder
             ;
 
-shotdesc:   shot
-            | shot block
-            | shot assist
+shotextra:  block
+            | assist
+            |
             ;
 
-shot:       player shotres PTS shot_type FROM NUM FEET        { printf("shot\n"); }
+shotloc:    FROM NUM FEET
+            |
+            ;
+
+shot:       PTS shot_type shotloc shotextra
+            ;
+
+shotattmpt: player shotres shot         { printf("shot\n"); }
             ;
 
 shotres:    MISS
