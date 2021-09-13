@@ -38,11 +38,13 @@ by                      return BY;
 vs\.                    return VS;
 gains\ possession       return GAIN_POSS;
 misses                  return MISS;
+makes                   return MAKE;
 jump\ shot              return JMP_SHOT;
 from                    return FROM;
 ft                      return FEET;
 block                   return BLOCK;
 layup                   return LAYUP;
+assist                  return ASSIST;
 
 {digit}-pt              {
                             RSTRIP_NUM(3);

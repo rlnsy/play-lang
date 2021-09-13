@@ -22,10 +22,12 @@
 %token GAIN_POSS
 %token PTS
 %token MISS;
+%token MAKE;
 %token JMP_SHOT;
 %token FROM;
 %token FEET;
 %token BLOCK;
+%token ASSIST;
 %token LAYUP;
 
 %%
@@ -52,9 +54,14 @@ play:       Q_START qnum Q_QTR                              { printf("START\n");
 
 shotdesc:   shot
             | shot block
+            | shot assist
             ;
 
-shot:       player MISS PTS shot_type FROM NUM FEET        { printf("Missed shot\n"); }
+shot:       player shotres PTS shot_type FROM NUM FEET        { printf("Missed shot\n"); }
+            ;
+
+shotres:    MISS
+            | MAKE
             ;
 
 shot_type:  JMP_SHOT
@@ -62,6 +69,9 @@ shot_type:  JMP_SHOT
             ;
 
 block:      BLOCK BY player
+            ;
+
+assist:     ASSIST BY player
             ;
 
 player:     STR                                             { printf("player: %s\n", yytext); }
