@@ -52,6 +52,7 @@ shot\ clock             return SHOT_CLOCK;
 bad\ pass               return BAD_PASS;
 steal                   return STEAL;
 lost\ ball              return LOST_BALL;
+hook\ shot              return SHOT_TYPE_HOOK_SHOT;
 
 {digit}-pt              {
                             RSTRIP_NUM(3);
