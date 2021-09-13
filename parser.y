@@ -57,6 +57,7 @@
 %token FOUL_TYPE_DEFENSIVE_THREE_SECONDS
 
 %token DRAWN_BY
+%token AT_RIM
 
 %%
 
@@ -109,6 +110,7 @@ shotextra:  block
             ;
 
 shotloc:    FROM NUM FEET
+            | AT_RIM
             |
             ;
 

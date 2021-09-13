@@ -73,6 +73,7 @@ tip-in                  return SHOT_TYPE_TIP_IN;
 [dD]efensive\ three\ seconds    return FOUL_TYPE_DEFENSIVE_THREE_SECONDS;
 
 drawn\ by                return DRAWN_BY;
+at\ rim                  return AT_RIM;
 
 
 {digit}-pt              {
