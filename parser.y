@@ -4,6 +4,8 @@
 	int yylex(void);
 	void yyerror(char *);
 	extern char *yytext;
+
+    int parsed_count = 0;
 %}
 
 %token NUM
@@ -30,7 +32,10 @@ plays:	    plays playl
             |
             ;
 
-playl:      play '\n'
+playl:      game '\t' play '\n'     { parsed_count++; }
+            ;
+
+game:       STR                     { printf("game: %s\n", yytext); }
             ;
 
 qnum:       NUM                     { printf("quarter: %d\n", yyval); }
@@ -49,5 +54,5 @@ player:     STR                     { printf("player: %s\n", yytext); }
 %%
 
 void yyerror(char *s) {
-	fprintf(stderr, "%s\n", s);
+	fprintf(stderr, "%s; [%d]\n", s, parsed_count);
 }

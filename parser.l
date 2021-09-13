@@ -13,8 +13,9 @@ digit   [0-9]
 %%
                /* RULES */
 
-[: \(\)\t]              ;
+[: \(\)]              ;
 
+\t                      return *yytext;                           ;
 \n                      return *yytext;                           ;
 
 {digit}+                {
