@@ -38,6 +38,8 @@
 %token SHOT_TYPE_JUMP_SHOT
 %token SHOT_TYPE_LAYUP
 %token SHOT_TYPE_HOOK_SHOT
+%token SHOT_TYPE_DUNK
+%token SHOT_TYPE_TIP_IN
 
 
 %%
@@ -99,6 +101,8 @@ shotres:    MISS
 shot_type:  SHOT_TYPE_JUMP_SHOT
             | SHOT_TYPE_LAYUP
             | SHOT_TYPE_HOOK_SHOT
+            | SHOT_TYPE_DUNK
+            | SHOT_TYPE_TIP_IN
             ;
 
 block:      BLOCK BY player

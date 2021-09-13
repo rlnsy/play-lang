@@ -53,6 +53,8 @@ bad\ pass               return BAD_PASS;
 steal                   return STEAL;
 lost\ ball              return LOST_BALL;
 hook\ shot              return SHOT_TYPE_HOOK_SHOT;
+dunk                    return SHOT_TYPE_DUNK;
+tip-in                  return SHOT_TYPE_TIP_IN;
 
 {digit}-pt              {
                             RSTRIP_NUM(3);
