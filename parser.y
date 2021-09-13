@@ -25,6 +25,8 @@
 %token JMP_SHOT;
 %token FROM;
 %token FEET;
+%token BLOCK;
+%token LAYUP;
 
 %%
 
@@ -45,7 +47,21 @@ play:       Q_START qnum Q_QTR                              { printf("START\n");
             | Q_END qnum Q_QTR                              { printf("END\n");}
             | DEF_RBND BY player                            { printf("Def. rebound\n"); }
             | JMP_BALL player VS player player GAIN_POSS    { printf("Jump ball\n"); }
-            | player MISS PTS JMP_SHOT FROM NUM FEET        { printf("Missed shot\n"); }
+            | shotdesc
+            ;
+
+shotdesc:   shot
+            | shot block
+            ;
+
+shot:       player MISS PTS shot_type FROM NUM FEET        { printf("Missed shot\n"); }
+            ;
+
+shot_type:  JMP_SHOT
+            | LAYUP
+            ;
+
+block:      BLOCK BY player
             ;
 
 player:     STR                                             { printf("player: %s\n", yytext); }

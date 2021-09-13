@@ -41,6 +41,8 @@ misses                  return MISS;
 jump\ shot              return JMP_SHOT;
 from                    return FROM;
 ft                      return FEET;
+block                   return BLOCK;
+layup                   return LAYUP;
 
 {digit}-pt              {
                             RSTRIP_NUM(3);
