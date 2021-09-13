@@ -47,11 +47,21 @@ game:       STR                                             { printf("game: %s\n
 qnum:       NUM                                             { printf("quarter: %d\n", yyval); }
             ;
 
-play:       Q_START qnum Q_QTR                              { printf("START\n"); }
-            | Q_END qnum Q_QTR                              { printf("END\n");}
-            | rbndtype BY rebounder                         { printf("rebound\n"); }
-            | JMP_BALL player VS player player GAIN_POSS    { printf("Jump ball\n"); }
+play:       clockevt
+            | rebound                                       { printf("rebound\n"); }
+            | jmpblldesc                                  { printf("Jump ball\n"); }
             | shotdesc
+            ;
+
+clockevt:   Q_START qnum Q_QTR                              { printf("START\n"); }
+            | Q_END qnum Q_QTR                              { printf("END\n");}
+            ;
+
+jumpball:   JMP_BALL player VS player
+            ;
+
+jmpblldesc: jumpball
+            | jumpball player GAIN_POSS
             ;
 
 rbndtype:   DEF_RBND
@@ -60,6 +70,9 @@ rbndtype:   DEF_RBND
 
 rebounder:  player
             | TEAM
+            ;
+
+rebound:    rbndtype BY rebounder
             ;
 
 shotdesc:   shot
