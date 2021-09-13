@@ -72,6 +72,8 @@ tip-in                  return SHOT_TYPE_TIP_IN;
 [tT]echnical\ foul              return FOUL_TYPE_TECHNICAL;
 [dD]efensive\ three\ seconds    return FOUL_TYPE_DEFENSIVE_THREE_SECONDS;
 
+drawn\ by                return DRAWN_BY;
+
 
 {digit}-pt              {
                             RSTRIP_NUM(3);

@@ -56,6 +56,7 @@
 %token FOUL_TYPE_TECHNICAL
 %token FOUL_TYPE_DEFENSIVE_THREE_SECONDS
 
+%token DRAWN_BY
 
 %%
 
@@ -77,6 +78,7 @@ play:       clockevt
             | jmpblldesc                                  { printf("Jump ball\n"); }
             | shotdesc
             | turnover
+            | foul
             ;
 
 clockevt:   Q_START qnum Q_QTR                              { printf("START\n"); }
@@ -141,6 +143,34 @@ turnoverc:  SHOT_CLOCK
             ;
 
 steal:      STEAL BY player
+            ;
+
+foulon:     player
+
+foulby:     player
+
+foulplrs:   foulon
+            | foulon DRAWN_BY foulby
+            |                                   { printf("bad pattern\n"); }
+            ;
+
+foul:       foultype BY foulplrs
+            ;
+
+foultype:   FOUL_TYPE_SHOOTING
+            | FOUL_TYPE_OFFENSIVE
+            | FOUL_TYPE_LOOSE_BALL
+            | FOUL_TYPE_PERSONAL
+            | FOUL_TYPE_PERSONAL_TAKE
+            | FOUL_TYPE_AWAY_FROM_PLAY
+            | FOUL_TYPE_PERSONAL_BLOCK
+            | FOUL_TYPE_OFFENSIVE_CHARGE
+            | FOUL_TYPE_SHOOTING_BLOCK
+            | FOUL_TYPE_INBOUND
+            | FOUL_TYPE_PUNCHING
+            | FOUL_TYPE_CLEAR_PATH
+            | FOUL_TYPE_TECHNICAL
+            | FOUL_TYPE_DEFENSIVE_THREE_SECONDS
             ;
 
 %%
