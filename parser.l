@@ -33,6 +33,7 @@ digit   [0-9]
 quarter                 return Q_QTR;
 
 [dD]efensive\ rebound   return DEF_RBND;
+[oO]ffensive\ rebound   return OFF_RBND;
 by                      return BY;
 [jJ]ump\ ball           return JMP_BALL;
 vs\.                    return VS;
@@ -45,6 +46,7 @@ ft                      return FEET;
 block                   return BLOCK;
 layup                   return LAYUP;
 assist                  return ASSIST;
+[tT]eam                 return TEAM;
 
 {digit}-pt              {
                             RSTRIP_NUM(3);

@@ -16,6 +16,7 @@
 %token Q_QTR
 
 %token DEF_RBND
+%token OFF_RBND
 %token BY
 %token JMP_BALL
 %token VS
@@ -29,6 +30,7 @@
 %token BLOCK;
 %token ASSIST;
 %token LAYUP;
+%token TEAM;
 
 %%
 
@@ -47,9 +49,17 @@ qnum:       NUM                                             { printf("quarter: %
 
 play:       Q_START qnum Q_QTR                              { printf("START\n"); }
             | Q_END qnum Q_QTR                              { printf("END\n");}
-            | DEF_RBND BY player                            { printf("Def. rebound\n"); }
+            | rbndtype BY rebounder                         { printf("rebound\n"); }
             | JMP_BALL player VS player player GAIN_POSS    { printf("Jump ball\n"); }
             | shotdesc
+            ;
+
+rbndtype:   DEF_RBND
+            | OFF_RBND
+            ;
+
+rebounder:  player
+            | TEAM
             ;
 
 shotdesc:   shot
@@ -57,7 +67,7 @@ shotdesc:   shot
             | shot assist
             ;
 
-shot:       player shotres PTS shot_type FROM NUM FEET        { printf("Missed shot\n"); }
+shot:       player shotres PTS shot_type FROM NUM FEET        { printf("shot\n"); }
             ;
 
 shotres:    MISS
