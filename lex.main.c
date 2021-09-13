@@ -8,7 +8,7 @@ int yylval;
 int main()
 {
 	while (yylex()) {
-		printf("%s\n", yytext);
+		printf("token: %s\n", yytext);
 	}
 	return 0;
 }

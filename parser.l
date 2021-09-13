@@ -1,21 +1,21 @@
             /* DEFINITIONS */
 %{
     #include "y.tab.h"
-%}
 
-    /* whitespace character */
-wsc     [ \t\n]
-    /* non-whitespace character */
-c       [^ \t\n]
+    #define RSTRIP_NUM(x)        \
+        yytext[yyleng - x] = 0; \
+        yylval = atoi(yytext);
+        
+%}
 
 digit   [0-9]
 
 %%
                /* RULES */
 
-\n                      return *yytext;
+[: \(\)\t]              ;
 
-[\(\)\.; \t]            ; /* skip */
+\n                      return *yytext;                           ;
 
 {digit}+                {
                             yylval = atoi(yytext);
@@ -23,9 +23,7 @@ digit   [0-9]
                         }
 
 {digit}+(st|nd|rd|th)   {
-                            /* strip off the number suffix */
-                            yytext[yyleng - 2] = 0;
-                            yylval = atoi(yytext);
+                            RSTRIP_NUM(2);
                             return NUM;
                         }
 
@@ -35,8 +33,20 @@ quarter                 return Q_QTR;
 
 [dD]efensive\ rebound   return DEF_RBND;
 by                      return BY;
+[jJ]ump\ ball           return JMP_BALL;
+vs\.                    return VS;
+gains\ possession       return GAIN_POSS;
+misses                  return MISS;
+jump\ shot              return JMP_SHOT;
+from                    return FROM;
+ft                      return FEET;
 
-{c}+                    return STR;
+{digit}-pt              {
+                            RSTRIP_NUM(3);
+                            return PTS;
+                        }
+
+[^: \(\)\t\n]+          return STR;
 
 %%
             /* SUBROUTINES */
