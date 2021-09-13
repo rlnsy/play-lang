@@ -52,9 +52,26 @@ shot\ clock             return SHOT_CLOCK;
 bad\ pass               return BAD_PASS;
 steal                   return STEAL;
 lost\ ball              return LOST_BALL;
+
 hook\ shot              return SHOT_TYPE_HOOK_SHOT;
 dunk                    return SHOT_TYPE_DUNK;
 tip-in                  return SHOT_TYPE_TIP_IN;
+
+[sS]hooting\ foul               return FOUL_TYPE_SHOOTING;
+[oO]ffensive\ foul              return FOUL_TYPE_OFFENSIVE;
+[lL]oose\ ball\ foul            return FOUL_TYPE_LOOSE_BALL;
+[pP]ersonal\ foul               return FOUL_TYPE_PERSONAL;
+[pP]ersonal\ take\ foul         return FOUL_TYPE_PERSONAL_TAKE;
+[aA]way\ from\ play\ foul       return FOUL_TYPE_AWAY_FROM_PLAY;
+[pP]ersonal\ block\ foul        return FOUL_TYPE_PERSONAL_BLOCK;
+[oO]ffensive\ charge\ foul      return FOUL_TYPE_OFFENSIVE_CHARGE;
+[sS]hooting\ block\ foul        return FOUL_TYPE_SHOOTING_BLOCK;
+[iI]nbound\ foul                return FOUL_TYPE_INBOUND;
+[pP]unching\ foul               return FOUL_TYPE_PUNCHING;
+[cC]lear\ path\ foul            return FOUL_TYPE_CLEAR_PATH;
+[tT]echnical\ foul              return FOUL_TYPE_TECHNICAL;
+[dD]efensive\ three\ seconds    return FOUL_TYPE_DEFENSIVE_THREE_SECONDS;
+
 
 {digit}-pt              {
                             RSTRIP_NUM(3);
