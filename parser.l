@@ -13,7 +13,7 @@ digit   [0-9]
 %%
                /* RULES */
 
-[: \(\)]              ;
+[:; \(\)]              ;
 
 \t                      return *yytext;                           ;
 \n                      return *yytext;                           ;
@@ -40,20 +40,25 @@ vs\.                    return VS;
 gains\ possession       return GAIN_POSS;
 misses                  return MISS;
 makes                   return MAKE;
-jump\ shot              return JMP_SHOT;
+jump\ shot              return SHOT_TYPE_JUMP_SHOT;
 from                    return FROM;
 ft                      return FEET;
 block                   return BLOCK;
-layup                   return LAYUP;
+layup                   return SHOT_TYPE_LAYUP;
 assist                  return ASSIST;
 [tT]eam                 return TEAM;
+[tT]urnover             return TURNOVER;
+shot\ clock             return SHOT_CLOCK;
+bad\ pass               return BAD_PASS;
+steal                   return STEAL;
+lost\ ball              return LOST_BALL;
 
 {digit}-pt              {
                             RSTRIP_NUM(3);
                             return PTS;
                         }
 
-[^: \(\)\t\n]+          return STR;
+[^:; \(\)\t\n]+          return STR;
 
 %%
             /* SUBROUTINES */

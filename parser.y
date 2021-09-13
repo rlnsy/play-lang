@@ -24,13 +24,20 @@
 %token PTS
 %token MISS;
 %token MAKE;
-%token JMP_SHOT;
 %token FROM;
 %token FEET;
 %token BLOCK;
 %token ASSIST;
-%token LAYUP;
 %token TEAM;
+%token TURNOVER;
+%token SHOT_CLOCK;
+%token BAD_PASS;
+%token STEAL;
+%token LOST_BALL;
+
+%token SHOT_TYPE_JUMP_SHOT
+%token SHOT_TYPE_LAYUP
+
 
 %%
 
@@ -51,6 +58,7 @@ play:       clockevt
             | rebound                                       { printf("rebound\n"); }
             | jmpblldesc                                  { printf("Jump ball\n"); }
             | shotdesc
+            | turnover
             ;
 
 clockevt:   Q_START qnum Q_QTR                              { printf("START\n"); }
@@ -87,8 +95,8 @@ shotres:    MISS
             | MAKE
             ;
 
-shot_type:  JMP_SHOT
-            | LAYUP
+shot_type:  SHOT_TYPE_JUMP_SHOT
+            | SHOT_TYPE_LAYUP
             ;
 
 block:      BLOCK BY player
@@ -100,8 +108,22 @@ assist:     ASSIST BY player
 player:     STR                                             { printf("player: %s\n", yytext); }
             ;
 
+turnovere:  player
+            | TEAM
+            ;
+
+turnover:   TURNOVER BY turnovere turnoverc
+
+turnoverc:  SHOT_CLOCK
+            | BAD_PASS steal
+            | LOST_BALL steal
+            ;
+
+steal:      STEAL BY player
+            ;
+
 %%
 
 void yyerror(char *s) {
-	fprintf(stderr, "%s; [%d]\n", s, parsed_count);
+	fprintf(stderr, "%s; [line %d]\n", s, parsed_count + 1);
 }
