@@ -32,23 +32,23 @@ plays:	    plays playl
             |
             ;
 
-playl:      game '\t' play '\n'     { parsed_count++; }
+playl:      game '\t' play '\n'                             { parsed_count++; }
             ;
 
-game:       STR                     { printf("game: %s\n", yytext); }
+game:       STR                                             { printf("game: %s\n", yytext); }
             ;
 
-qnum:       NUM                     { printf("quarter: %d\n", yyval); }
+qnum:       NUM                                             { printf("quarter: %d\n", yyval); }
             ;
 
-play:       Q_START qnum Q_QTR      { printf("START\n"); }
-            | Q_END qnum Q_QTR      { printf("END\n");}
-            | DEF_RBND BY player    { printf("Def. rebound\n"); }
-            | JMP_BALL player VS player player GAIN_POSS { printf("Jump ball\n"); }
-            | player MISS PTS JMP_SHOT FROM NUM FEET { printf("Missed shot\n"); }
+play:       Q_START qnum Q_QTR                              { printf("START\n"); }
+            | Q_END qnum Q_QTR                              { printf("END\n");}
+            | DEF_RBND BY player                            { printf("Def. rebound\n"); }
+            | JMP_BALL player VS player player GAIN_POSS    { printf("Jump ball\n"); }
+            | player MISS PTS JMP_SHOT FROM NUM FEET        { printf("Missed shot\n"); }
             ;
 
-player:     STR                     { printf("player: %s\n", yytext); }
+player:     STR                                             { printf("player: %s\n", yytext); }
             ;
 
 %%
