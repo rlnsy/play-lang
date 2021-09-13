@@ -74,6 +74,10 @@ tip-in                  return SHOT_TYPE_TIP_IN;
 
 drawn\ by                return DRAWN_BY;
 at\ rim                  return AT_RIM;
+of                       return OF;
+free\ throw              return FREE_THROW;
+flagrant\ free\ throw    return FLAGRANT;
+clear\ path              return CLEAR_PATH;
 
 
 {digit}-pt              {

@@ -58,6 +58,10 @@
 
 %token DRAWN_BY
 %token AT_RIM
+%token FREE_THROW
+%token FLAGRANT
+%token CLEAR_PATH
+%token OF
 
 %%
 
@@ -115,6 +119,10 @@ shotloc:    FROM NUM FEET
             ;
 
 shot:       PTS shot_type shotloc shotextra
+            | FREE_THROW NUM OF NUM
+            | FLAGRANT FREE_THROW
+            | FLAGRANT FREE_THROW NUM OF NUM
+            | CLEAR_PATH FREE_THROW NUM OF NUM
             ;
 
 shotattmpt: player shotres shot         { printf("shot\n"); }
