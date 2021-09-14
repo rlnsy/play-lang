@@ -79,6 +79,12 @@ free\ throw              return FREE_THROW;
 flagrant\ free\ throw    return FLAGRANT;
 clear\ path              return CLEAR_PATH;
 full\ timeout            return FULL_TIMEOUT;
+enters\ the\ game\ for          return SUB;
+traveling                       return TRAVEL;
+(off|offensive)\ goaltending    return OFFENSIVE_GOALTEND;
+def\ goaltending                return DEFENSIVE_GOALTEND;
+[vV]iolation                    return VIOLATION;
+
 
 
 {digit}-pt              {

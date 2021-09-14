@@ -98,6 +98,10 @@
 %token CLEAR_PATH
 %token OF
 %token FULL_TIMEOUT
+%token SUB
+%token TRAVEL
+%token OFFENSIVE_GOALTEND DEFENSIVE_GOALTEND
+%token VIOLATION
 
 %%
 
@@ -118,6 +122,8 @@ play:       clockevt
             | turnover
             | foul
             | timeout
+            | substitution
+            | violation
             ;
 
 clockevt:   Q_START NUM Q_QTR                              { state.quarter = $2; }
@@ -191,6 +197,9 @@ turnover:   TURNOVER BY turnovere turnoverc
 turnoverc:  SHOT_CLOCK
             | BAD_PASS steal
             | LOST_BALL steal
+            | FOUL_TYPE_OFFENSIVE
+            | TRAVEL
+            | OFFENSIVE_GOALTEND
             ;
 
 steal:      STEAL BY player
@@ -229,6 +238,15 @@ timeout:    team FULL_TIMEOUT
             ;
 
 team:       STR                     { data.team_name = $1; }
+            ;
+
+substitution: player SUB player
+                ;
+
+violation:  VIOLATION BY TEAM teamv;
+            ;
+
+teamv:      DEFENSIVE_GOALTEND
             ;
 
 %%
