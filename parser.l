@@ -84,6 +84,12 @@ traveling                       return TRAVEL;
 (off|offensive)\ goaltending    return OFFENSIVE_GOALTEND;
 def\ goaltending                return DEFENSIVE_GOALTEND;
 [vV]iolation                    return VIOLATION;
+out\ of\ bounds                 return OUT_OF_BOUNDS;
+delay\ of\ game                 return DELAY_OF_GAME;
+[iI]nstant\ [rR]eplay           return INSTANT_REPLAY;
+[cC]hallenge                    return CHALLENGE;
+[rR]equest                      return REQUEST;
+([rR]uling)?\ [sS]tands         return RULING_STANDS;
 
 
 

@@ -102,6 +102,9 @@
 %token TRAVEL
 %token OFFENSIVE_GOALTEND DEFENSIVE_GOALTEND
 %token VIOLATION
+%token OUT_OF_BOUNDS
+%token DELAY_OF_GAME
+%token CHALLENGE REQUEST INSTANT_REPLAY RULING_STANDS
 
 %%
 
@@ -124,6 +127,7 @@ play:       clockevt
             | timeout
             | substitution
             | violation
+            | replay
             ;
 
 clockevt:   Q_START NUM Q_QTR                              { state.quarter = $2; }
@@ -200,6 +204,8 @@ turnoverc:  SHOT_CLOCK
             | FOUL_TYPE_OFFENSIVE
             | TRAVEL
             | OFFENSIVE_GOALTEND
+            | OUT_OF_BOUNDS LOST_BALL
+            | BAD_PASS
             ;
 
 steal:      STEAL BY player
@@ -247,7 +253,20 @@ violation:  VIOLATION BY TEAM teamv;
             ;
 
 teamv:      DEFENSIVE_GOALTEND
+            | DELAY_OF_GAME
             ;
+
+replay:     INSTANT_REPLAY replay_reason replay_result
+            | INSTANT_REPLAY
+            ;
+
+replay_reason: CHALLENGE
+                | REQUEST
+                ;
+
+replay_result: RULING_STANDS
+                |
+                ;
 
 %%
 
