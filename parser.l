@@ -78,6 +78,7 @@ of                       return OF;
 free\ throw              return FREE_THROW;
 flagrant\ free\ throw    return FLAGRANT;
 clear\ path              return CLEAR_PATH;
+full\ timeout            return FULL_TIMEOUT;
 
 
 {digit}-pt              {

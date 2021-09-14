@@ -15,6 +15,7 @@
     struct {
         char *game;
         char *player_1;
+        char *team_name;
     } data;
 
     void init() {
@@ -22,10 +23,11 @@
     }
 
     void display() {
-        printf("%d,%s,%d,%s\n", ++parsed_count,
+        printf("%d,%s,%d,%s,%s\n", ++parsed_count,
             data.game,
             state.quarter,
-            data.player_1
+            data.player_1,
+            data.team_name
         );
         init();
     }
@@ -87,6 +89,7 @@
 %token FLAGRANT
 %token CLEAR_PATH
 %token OF
+%token FULL_TIMEOUT
 
 %%
 
@@ -109,6 +112,7 @@ play:       clockevt
             | shotattmpt
             | turnover
             | foul
+            | timeout
             ;
 
 clockevt:   Q_START qnum Q_QTR                              { state.quarter = $2; }
@@ -213,6 +217,13 @@ foultype:   FOUL_TYPE_SHOOTING
             | FOUL_TYPE_CLEAR_PATH
             | FOUL_TYPE_TECHNICAL
             | FOUL_TYPE_DEFENSIVE_THREE_SECONDS
+            ;
+
+timeout:    team FULL_TIMEOUT
+            |
+            ;
+
+team:       STR                     { data.team_name = strdup(yytext); }
             ;
 
 %%
