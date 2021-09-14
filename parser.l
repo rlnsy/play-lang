@@ -76,8 +76,8 @@ drawn\ by                return DRAWN_BY;
 at\ rim                  return AT_RIM;
 of                       return OF;
 free\ throw              return FREE_THROW;
-flagrant\ free\ throw    return FLAGRANT;
-clear\ path              return CLEAR_PATH;
+flagrant\ free\ throw    return FLAGRANT_FREE_THROW;
+clear\ path\ free\ throw return CLEAR_PATH_FREE_THROW;
 full\ timeout            return FULL_TIMEOUT;
 enters\ the\ game\ for          return SUB;
 traveling                       return TRAVEL;
@@ -90,7 +90,8 @@ delay\ of\ game                 return DELAY_OF_GAME;
 [cC]hallenge                    return CHALLENGE;
 [rR]equest                      return REQUEST;
 ([rR]uling)?\ [sS]tands         return RULING_STANDS;
-
+[tT]echnical\ free\ throw       return TECHNICAL_FREE_THROW;
+[sS]tep\ out\ of\ bounds        return STEP_OUT_OF_BOUNDS;
 
 
 {digit}-pt              {

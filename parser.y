@@ -94,8 +94,7 @@
 %token DRAWN_BY
 %token AT_RIM
 %token FREE_THROW
-%token FLAGRANT
-%token CLEAR_PATH
+%token FLAGRANT_FREE_THROW CLEAR_PATH_FREE_THROW TECHNICAL_FREE_THROW
 %token OF
 %token FULL_TIMEOUT
 %token SUB
@@ -105,6 +104,7 @@
 %token OUT_OF_BOUNDS
 %token DELAY_OF_GAME
 %token CHALLENGE REQUEST INSTANT_REPLAY RULING_STANDS
+%token STEP_OUT_OF_BOUNDS
 
 %%
 
@@ -164,9 +164,10 @@ shotloc:    FROM NUM FEET
 
 shot:       PTS shot_type shotloc shotextra
             | FREE_THROW NUM OF NUM
-            | FLAGRANT FREE_THROW
-            | FLAGRANT FREE_THROW NUM OF NUM
-            | CLEAR_PATH FREE_THROW NUM OF NUM
+            | FLAGRANT_FREE_THROW
+            | FLAGRANT_FREE_THROW NUM OF NUM
+            | CLEAR_PATH_FREE_THROW NUM OF NUM
+            | TECHNICAL_FREE_THROW
             ;
 
 shotattmpt: player shotres shot
@@ -206,6 +207,7 @@ turnoverc:  SHOT_CLOCK
             | OFFENSIVE_GOALTEND
             | OUT_OF_BOUNDS LOST_BALL
             | BAD_PASS
+            | STEP_OUT_OF_BOUNDS
             ;
 
 steal:      STEAL BY player
