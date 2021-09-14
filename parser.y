@@ -35,6 +35,14 @@
     #define BAD NULL
 %}
 
+%union {
+    char *str;
+    int num;
+}
+
+%type<num> NUM
+%type<str> STR
+
 %token NUM
 %token STR
 
@@ -100,10 +108,7 @@ plays:	    plays playl
 playl:      game '\t' play '\n'                             { display();}
             ;
 
-game:       STR                                             { data.game = strdup(yytext); }
-            ;
-
-qnum:       NUM
+game:       STR                                             { data.game = $1; }
             ;
 
 play:       clockevt
@@ -115,8 +120,8 @@ play:       clockevt
             | timeout
             ;
 
-clockevt:   Q_START qnum Q_QTR                              { state.quarter = $2; }
-            | Q_END qnum Q_QTR
+clockevt:   Q_START NUM Q_QTR                              { state.quarter = $2; }
+            | Q_END NUM Q_QTR
             ;
 
 jumpball:   JMP_BALL player VS player
@@ -174,7 +179,7 @@ block:      BLOCK BY player
 assist:     ASSIST BY player
             ;
 
-player:     STR                                             { data.player_1 = strdup(yytext); }
+player:     STR                                             { data.player_1 = $1; }
             ;
 
 turnovere:  player
@@ -223,7 +228,7 @@ timeout:    team FULL_TIMEOUT
             |
             ;
 
-team:       STR                     { data.team_name = strdup(yytext); }
+team:       STR                     { data.team_name = $1; }
             ;
 
 %%

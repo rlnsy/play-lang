@@ -4,7 +4,7 @@
 
     #define RSTRIP_NUM(x)        \
         yytext[yyleng - x] = 0; \
-        yylval = atoi(yytext);
+        yylval.num = atoi(yytext);
         
 %}
 
@@ -19,7 +19,7 @@ digit   [0-9]
 \n                      return *yytext;                           ;
 
 {digit}+                {
-                            yylval = atoi(yytext);
+                            yylval.num = atoi(yytext);
                             return NUM;
                         }
 
@@ -86,7 +86,10 @@ full\ timeout            return FULL_TIMEOUT;
                             return PTS;
                         }
 
-[^:; \(\)\t\n]+          return STR;
+[^:; \(\)\t\n]+         {
+                            yylval.str = strdup(yytext);
+                            return STR;
+                        }
 
 %%
             /* SUBROUTINES */
