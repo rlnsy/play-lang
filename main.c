@@ -1,8 +1,10 @@
 #include "y.tab.h"
 
 extern int yyparse();
+extern void init();
 
 int main(void) {
-	yyparse();
-	return 0;
+    init();
+    yyparse();
+    return 0;
 }

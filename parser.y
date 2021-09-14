@@ -1,11 +1,32 @@
 
 %{
 	#include <stdio.h>
+    #include <string.h>
 	int yylex(void);
 	void yyerror(char *);
 	extern char *yytext;
 
     int parsed_count = 0;
+
+    struct {
+        int quarter;
+    } state;
+
+    struct {
+        char *game;
+        char *player_1;
+    } data;
+
+    void init() {
+        memset(&data, 0, sizeof(data));
+    }
+
+    void display() {
+        printf("%d,%s,%d\n", ++parsed_count, data.game, state.quarter);
+        init();
+    }
+
+    #define BAD NULL
 %}
 
 %token NUM
@@ -69,25 +90,25 @@ plays:	    plays playl
             |
             ;
 
-playl:      game '\t' play '\n'                             { parsed_count++; }
+playl:      game '\t' play '\n'                             { display();}
             ;
 
-game:       STR                                             { printf("game: %s\n", yytext); }
+game:       STR                                             { data.game = strdup(yytext); }
             ;
 
-qnum:       NUM                                             { printf("quarter: %d\n", yyval); }
+qnum:       NUM
             ;
 
 play:       clockevt
-            | rebound                                       { printf("rebound\n"); }
-            | jmpblldesc                                  { printf("Jump ball\n"); }
+            | rebound
+            | jmpblldesc
             | shotattmpt
             | turnover
             | foul
             ;
 
-clockevt:   Q_START qnum Q_QTR                              { printf("START\n"); }
-            | Q_END qnum Q_QTR                              { printf("END\n");}
+clockevt:   Q_START qnum Q_QTR                              { state.quarter = $2; }
+            | Q_END qnum Q_QTR
             ;
 
 jumpball:   JMP_BALL player VS player
@@ -125,7 +146,7 @@ shot:       PTS shot_type shotloc shotextra
             | CLEAR_PATH FREE_THROW NUM OF NUM
             ;
 
-shotattmpt: player shotres shot         { printf("shot\n"); }
+shotattmpt: player shotres shot
             ;
 
 shotres:    MISS
@@ -145,7 +166,7 @@ block:      BLOCK BY player
 assist:     ASSIST BY player
             ;
 
-player:     STR                                             { printf("player: %s\n", yytext); }
+player:     STR                                             { data.player_1 = strdup(yytext); }
             ;
 
 turnovere:  player
@@ -168,7 +189,7 @@ foulby:     player
 
 foulplrs:   foulon
             | foulon DRAWN_BY foulby
-            |                                   { printf("bad pattern\n"); }
+            |                                   { BAD; }
             ;
 
 foul:       foultype BY foulplrs
