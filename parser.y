@@ -272,6 +272,7 @@ turnoverc:  SHOT_CLOCK
             | SCORE_IN_OPP_BASKET
             | POSS LOST_BALL
             | POSS LOST_BALL steal
+            | steal
             ;
 
 steal:      STEAL BY player
