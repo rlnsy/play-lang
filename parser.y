@@ -252,7 +252,8 @@ timeout:    team FULL_TIMEOUT
             |
             ;
 
-team:       STR                     { data.team_name = $1; }
+team:       STR
+            | STR STR
             ;
 
 substitution: player SUB player
