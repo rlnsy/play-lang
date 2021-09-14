@@ -72,6 +72,13 @@ tip-in                  return SHOT_TYPE_TIP_IN;
 [tT]echnical\ foul              return FOUL_TYPE_TECHNICAL;
 [dD]efensive\ three\ seconds    return FOUL_TYPE_DEFENSIVE_THREE_SECONDS;
 [fF]lagrant\ foul               return FOUL_TYPE_FLAGRANT;
+[dD]ef\ 3\ sec\ tech\ foul return FOUL_TYPE_DEF_3_SEC_TECH;
+[dD]ouble\ technical\ foul         return FOUL_TYPE_DOUBLE_TECHNICAL;
+[tT]aunting\ technical\ foul         return FOUL_TYPE_TAUNTING_TECHNICAL;
+[dD]ouble\ personal\ foul         return FOUL_TYPE_DOUBLE_PERSONAL;
+[dD]elay\ tech\ foul         return FOUL_TYPE_DELAY_TECHNICAL;
+Non\ unsport\ tech\ foul         return FOUL_TYPE_NON_UNSPORT_TECHNICAL;
+Hanging\ tech\ foul         return FOUL_TYPE_HANGING_TECHNICAL;
 
 type                            return TYPE;
 
@@ -82,6 +89,8 @@ free\ throw              return FREE_THROW;
 flagrant\ free\ throw    return FLAGRANT_FREE_THROW;
 clear\ path\ free\ throw return CLEAR_PATH_FREE_THROW;
 full\ timeout            return FULL_TIMEOUT;
+Official\ timeout        return OFFICIAL_TIMEOUT;
+20\ second\ timeout        return TWENTY_SEC_TIMEOUT;
 enters\ the\ game\ for          return SUB;
 traveling                       return TRAVEL;
 (off|offensive)\ goaltending    return OFFENSIVE_GOALTEND;
@@ -97,6 +106,28 @@ delay\ of\ game                 return DELAY_OF_GAME;
 [sS]tep\ out\ of\ bounds        return STEP_OUT_OF_BOUNDS;
 discontinued\ dribble           return DISCONTINUED_DRIBBLE;
 kicked\ ball                    return KICKED_BALL;
+sec                             return SECOND;
+ejected\ from\ game             return EJECTED;
+back\ court                     return BACK_COURT;
+overtime                        return OVERTIME;
+dbl\ dribble                    return DOUBLE_DRIBBLE;
+palming                         return PALMING;
+lane\ violation\.?              return LANE_VIOLATION;
+inbounds?                       return INBOUND;
+double\ lane                    return DOUBLE_LANE;
+illegal\ assist                 return ILLEGAL_ASSIST;
+punched\ ball                   return PUNCHED_BALL;
+lane                            return LANE;
+3\ sec                          return THREE_SEC;
+5\ sec                          return FIVE_SEC;
+8\ sec                          return EIGHT_SEC;
+illegal\ screen                 return ILLEGAL_SCREEN;
+jump\ ball\ violation\.?        return JUMP_BALL_VIOLATION;
+double\ personal                return DOUBLE_PERSONAL;
+swinging\ elbows                return SWINGING_ELBOWS;
+score\ in\ opp\.\ basket        return SCORE_IN_OPP_BASKET;
+poss.                           return POSS;
+and                             return AND;
 
 
 {digit}-pt              {
