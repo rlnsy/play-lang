@@ -22,7 +22,11 @@
     }
 
     void display() {
-        printf("%d,%s,%d\n", ++parsed_count, data.game, state.quarter);
+        printf("%d,%s,%d,%s\n", ++parsed_count,
+            data.game,
+            state.quarter,
+            data.player_1
+        );
         init();
     }
 
