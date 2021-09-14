@@ -71,6 +71,9 @@ tip-in                  return SHOT_TYPE_TIP_IN;
 [cC]lear\ path\ foul            return FOUL_TYPE_CLEAR_PATH;
 [tT]echnical\ foul              return FOUL_TYPE_TECHNICAL;
 [dD]efensive\ three\ seconds    return FOUL_TYPE_DEFENSIVE_THREE_SECONDS;
+[fF]lagrant\ foul               return FOUL_TYPE_FLAGRANT;
+
+type                            return TYPE;
 
 drawn\ by                return DRAWN_BY;
 at\ rim                  return AT_RIM;
@@ -92,6 +95,8 @@ delay\ of\ game                 return DELAY_OF_GAME;
 ([rR]uling)?\ [sS]tands         return RULING_STANDS;
 [tT]echnical\ free\ throw       return TECHNICAL_FREE_THROW;
 [sS]tep\ out\ of\ bounds        return STEP_OUT_OF_BOUNDS;
+discontinued\ dribble           return DISCONTINUED_DRIBBLE;
+kicked\ ball                    return KICKED_BALL;
 
 
 {digit}-pt              {

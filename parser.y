@@ -90,6 +90,7 @@
 %token FOUL_TYPE_CLEAR_PATH
 %token FOUL_TYPE_TECHNICAL
 %token FOUL_TYPE_DEFENSIVE_THREE_SECONDS
+%token FOUL_TYPE_FLAGRANT
 
 %token DRAWN_BY
 %token AT_RIM
@@ -105,6 +106,9 @@
 %token DELAY_OF_GAME
 %token CHALLENGE REQUEST INSTANT_REPLAY RULING_STANDS
 %token STEP_OUT_OF_BOUNDS
+%token DISCONTINUED_DRIBBLE
+%token TYPE
+%token KICKED_BALL
 
 %%
 
@@ -202,12 +206,14 @@ turnover:   TURNOVER BY turnovere turnoverc
 turnoverc:  SHOT_CLOCK
             | BAD_PASS steal
             | LOST_BALL steal
+            | LOST_BALL
             | FOUL_TYPE_OFFENSIVE
             | TRAVEL
             | OFFENSIVE_GOALTEND
             | OUT_OF_BOUNDS LOST_BALL
             | BAD_PASS
             | STEP_OUT_OF_BOUNDS
+            | DISCONTINUED_DRIBBLE
             ;
 
 steal:      STEAL BY player
@@ -223,6 +229,7 @@ foulplrs:   foulon
             ;
 
 foul:       foultype BY foulplrs
+            | FOUL_TYPE_FLAGRANT TYPE NUM BY foulplrs
             ;
 
 foultype:   FOUL_TYPE_SHOOTING
@@ -256,6 +263,7 @@ violation:  VIOLATION BY TEAM teamv;
 
 teamv:      DEFENSIVE_GOALTEND
             | DELAY_OF_GAME
+            | KICKED_BALL
             ;
 
 replay:     INSTANT_REPLAY replay_reason replay_result
