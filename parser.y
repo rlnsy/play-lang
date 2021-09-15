@@ -101,6 +101,7 @@
 %token FOUL_TYPE_DELAY_TECHNICAL
 %token FOUL_TYPE_NON_UNSPORT_TECHNICAL
 %token FOUL_TYPE_HANGING_TECHNICAL
+%token FOUL_TYPE_EXCESS_TIMEOUT_TECHNICAL
 
 %token DRAWN_BY
 %token AT_RIM
@@ -143,6 +144,8 @@
 %token AND
 %token NO
 %token TIMEOUT
+%token EXCESSIVE_TIMEOUT
+%token ENTER_BASKET_FROM_BELOW
 
 %%
 
@@ -248,8 +251,10 @@ turnoverc:  SHOT_CLOCK
             | LOST_BALL
             | FOUL_TYPE_OFFENSIVE
             | TRAVEL
+            | TRAVEL steal
             | OFFENSIVE_GOALTEND
             | OUT_OF_BOUNDS LOST_BALL
+            | OUT_OF_BOUNDS
             | BAD_PASS
             | STEP_OUT_OF_BOUNDS
             | DISCONTINUED_DRIBBLE
@@ -269,12 +274,18 @@ turnoverc:  SHOT_CLOCK
             | KICKED_BALL
             | ILLEGAL_SCREEN
             | JUMP_BALL_VIOLATION
+            | JUMP_BALL_VIOLATION steal
             | DOUBLE_PERSONAL
             | SWINGING_ELBOWS
             | SCORE_IN_OPP_BASKET
             | POSS LOST_BALL
             | POSS LOST_BALL steal
             | NO steal
+            | EXCESSIVE_TIMEOUT
+            | FOUL_TYPE_OFFENSIVE steal
+            | ENTER_BASKET_FROM_BELOW
+            | OUT_OF_BOUNDS LOST_BALL steal
+            | NO                                { BAD; }
             ;
 
 steal:      STEAL BY player
@@ -293,6 +304,7 @@ foul:       foultype BY foulplrs
             | FOUL_TYPE_FLAGRANT TYPE NUM BY foulplrs
             | foultype BY TEAM
             | doublefoul BY player AND player
+            | doublefoul BY TEAM
             ;
 
 doublefoul: FOUL_TYPE_DOUBLE_TECHNICAL
@@ -318,12 +330,14 @@ foultype:   FOUL_TYPE_SHOOTING
             | FOUL_TYPE_DELAY_TECHNICAL
             | FOUL_TYPE_NON_UNSPORT_TECHNICAL
             | FOUL_TYPE_HANGING_TECHNICAL
+            | FOUL_TYPE_EXCESS_TIMEOUT_TECHNICAL
             ;
 
 timeout:    team FULL_TIMEOUT
             | OFFICIAL_TIMEOUT
             | team TWENTY_SEC_TIMEOUT
             | team NO TIMEOUT
+            | FULL_TIMEOUT
             ;
 
 team:       STR
@@ -352,6 +366,7 @@ playerv:    DOUBLE_LANE
             | DEFENSIVE_GOALTEND
             | KICKED_BALL
             | LANE
+            | NO                                { BAD; }
             ;
 
 replay:     INSTANT_REPLAY replay_reason replay_result

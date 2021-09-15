@@ -79,6 +79,7 @@ tip-in                  return SHOT_TYPE_TIP_IN;
 [dD]elay\ tech\ foul         return FOUL_TYPE_DELAY_TECHNICAL;
 Non\ unsport\ tech\ foul         return FOUL_TYPE_NON_UNSPORT_TECHNICAL;
 Hanging\ tech\ foul         return FOUL_TYPE_HANGING_TECHNICAL;
+Excess\ timeout\ tech\ foul        return FOUL_TYPE_EXCESS_TIMEOUT_TECHNICAL;
 
 type                            return TYPE;
 
@@ -130,6 +131,8 @@ poss.                           return POSS;
 and                             return AND;
 no                              return NO;
 timeout                         return TIMEOUT;
+excessive\ timeout              return EXCESSIVE_TIMEOUT;
+enter\ basket\ from\ below      return ENTER_BASKET_FROM_BELOW;
 
 
 {digit}-pt              {
