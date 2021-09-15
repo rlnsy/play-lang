@@ -141,6 +141,8 @@
 %token TWENTY_SEC_TIMEOUT
 %token POSS
 %token AND
+%token NO
+%token TIMEOUT
 
 %%
 
@@ -272,7 +274,7 @@ turnoverc:  SHOT_CLOCK
             | SCORE_IN_OPP_BASKET
             | POSS LOST_BALL
             | POSS LOST_BALL steal
-            | steal
+            | NO steal
             ;
 
 steal:      STEAL BY player
@@ -321,6 +323,7 @@ foultype:   FOUL_TYPE_SHOOTING
 timeout:    team FULL_TIMEOUT
             | OFFICIAL_TIMEOUT
             | team TWENTY_SEC_TIMEOUT
+            | team NO TIMEOUT
             ;
 
 team:       STR
