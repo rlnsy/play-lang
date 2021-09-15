@@ -79,29 +79,29 @@
 %token DUNK
 %token TIP_IN
 
-%token SHOOTING_FOUL
-%token OFFENSIVE_FOUL
-%token LOOSE_BALL_FOUL
-%token PERSONAL_FOUL
-%token PERSONAL_TAKE_FOUL
-%token AWAY_FROM_PLAY_FOUL
-%token PERSONAL_BLOCK_FOUL
-%token OFFENSIVE_CHARGE_FOUL
-%token SHOOTING_BLOCK_FOUL
-%token INBOUND_FOUL
-%token PUNCHING_FOUL
-%token CLEAR_PATH_FOUL
-%token TECHNICAL_FOUL
-%token DEFENSIVE_THREE_SECONDS_FOUL
-%token FLAGRANT_FOUL
-%token DEFENSIVE_3_SECOND_TECH_FOUL
-%token DOUBLE_TECHNICAL_FOUL
-%token TAUNTING_TECHNICAL_FOUL
-%token DOUBLE_PERSONAL_FOUL
-%token DELAY_TECHNICAL_FOUL
-%token NON_UNSPORT_TECHNICAL_FOUL
-%token HANGING_TECHNICAL_FOUL
-%token EXCESS_TIMEOUT_TECHNICAL_FOUL
+%token SHOOTING
+%token OFFENSIVE
+%token LOOSE_BALL
+%token PERSONAL
+%token PERSONAL_TAKE
+%token AWAY_FROM_PLAY
+%token PERSONAL_BLOCK
+%token OFFENSIVE_CHARGE
+%token SHOOTING_BLOCK
+%token PUNCHING
+%token CLEAR_PATH
+%token TECHNICAL
+%token DEFENSIVE_THREE_SECONDS
+%token FLAGRANT
+%token DEFENSIVE_3_SECOND_TECH
+%token DOUBLE_TECHNICAL
+%token TAUNTING_TECHNICAL
+%token DELAY_TECHNICAL
+%token NON_UNSPORT_TECHNICAL
+%token HANGING_TECHNICAL
+%token EXCESS_TIMEOUT_TECHNICAL
+
+%token FOUL
 
 %token DRAWN_BY
 %token AT_RIM
@@ -249,7 +249,7 @@ turnoverc:  SHOT_CLOCK
             | BAD_PASS steal
             | LOST_BALL steal
             | LOST_BALL
-            | OFFENSIVE_FOUL
+            | OFFENSIVE FOUL
             | TRAVEL
             | TRAVEL steal
             | OFFENSIVE_GOALTEND
@@ -282,7 +282,7 @@ turnoverc:  SHOT_CLOCK
             | POSS LOST_BALL steal
             | NO steal
             | EXCESSIVE_TIMEOUT
-            | OFFENSIVE_FOUL steal
+            | OFFENSIVE FOUL steal
             | ENTER_BASKET_FROM_BELOW
             | OUT_OF_BOUNDS LOST_BALL steal
             | NO                                { BAD; }
@@ -300,37 +300,41 @@ foulplrs:   foulon
             |                                   { BAD; }
             ;
 
-foul:       foultype BY foulplrs
-            | FLAGRANT_FOUL TYPE NUM BY foulplrs
-            | foultype BY TEAM
+foul:       foulname BY foulplrs
+            | foulname BY TEAM
             | doublefoul BY player AND player
             | doublefoul BY TEAM
             ;
 
-doublefoul: DOUBLE_TECHNICAL_FOUL
-            | DOUBLE_PERSONAL_FOUL
+doublefoul: DOUBLE_TECHNICAL FOUL
+            | DOUBLE_PERSONAL FOUL
             ;
 
-foultype:   SHOOTING_FOUL
-            | OFFENSIVE_FOUL
-            | LOOSE_BALL_FOUL
-            | PERSONAL_FOUL
-            | PERSONAL_TAKE_FOUL
-            | AWAY_FROM_PLAY_FOUL
-            | PERSONAL_BLOCK_FOUL
-            | OFFENSIVE_CHARGE_FOUL
-            | SHOOTING_BLOCK_FOUL
-            | INBOUND_FOUL
-            | PUNCHING_FOUL
-            | CLEAR_PATH_FOUL
-            | TECHNICAL_FOUL
-            | DEFENSIVE_THREE_SECONDS_FOUL
-            | DEFENSIVE_3_SECOND_TECH_FOUL
-            | TAUNTING_TECHNICAL_FOUL
-            | DELAY_TECHNICAL_FOUL
-            | NON_UNSPORT_TECHNICAL_FOUL
-            | HANGING_TECHNICAL_FOUL
-            | EXCESS_TIMEOUT_TECHNICAL_FOUL
+foulname:   foultype FOUL
+            | FLAGRANT FOUL TYPE NUM
+            | DEFENSIVE_THREE_SECONDS
+            ;
+
+
+foultype:   SHOOTING
+            | OFFENSIVE
+            | LOOSE_BALL
+            | PERSONAL
+            | PERSONAL_TAKE
+            | AWAY_FROM_PLAY
+            | PERSONAL_BLOCK
+            | OFFENSIVE_CHARGE
+            | SHOOTING_BLOCK
+            | INBOUND
+            | PUNCHING
+            | CLEAR_PATH
+            | TECHNICAL
+            | DEFENSIVE_3_SECOND_TECH
+            | TAUNTING_TECHNICAL
+            | DELAY_TECHNICAL
+            | NON_UNSPORT_TECHNICAL
+            | HANGING_TECHNICAL
+            | EXCESS_TIMEOUT_TECHNICAL
             ;
 
 timeout:    team FULL_TIMEOUT
