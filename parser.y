@@ -178,14 +178,8 @@ clockevt:   START NUM QUARTER                              { state.quarter = $2;
             | END NUM OVERTIME
             ;
 
-jumpball:   JUMP_BALL player VS player jumpballres
-            | JUMP_BALL VS                                   { BAD; }
-            | JUMP_BALL player VS                            { BAD; }
+rebound:    rbndtype BY rebounder
             ;
-
-jumpballres: player GAIN_POSSESSION
-                |
-                ;
 
 rbndtype:   DEFENSIVE_REBOUND
             | OFF_REBOUND
@@ -195,26 +189,17 @@ rebounder:  player
             | TEAM
             ;
 
-rebound:    rbndtype BY rebounder
+jumpball:   JUMP_BALL player VS player jumpballres
+            | JUMP_BALL VS                                   { BAD; }
+            | JUMP_BALL player VS                            { BAD; }
             ;
 
-shotextra:  block
-            | assist
-            |
+player:     STR                                             { data.player_1 = $1; }
             ;
 
-shotloc:    FROM NUM FEET
-            | AT_RIM
-            |
-            ;
-
-shot:       PTS shot_type shotloc shotextra
-            | FREE_THROW NUM OF NUM
-            | FLAGRANT_FREE_THROW
-            | FLAGRANT_FREE_THROW NUM OF NUM
-            | CLEAR_PATH_FREE_THROW NUM OF NUM
-            | TECHNICAL_FREE_THROW
-            ;
+jumpballres: player GAIN_POSSESSION
+                |
+                ;
 
 shotattmpt: shooter shotres shot
             ;
@@ -227,11 +212,29 @@ shotres:    MISS
             | MAKE
             ;
 
+shot:       PTS shot_type shotloc shotextra
+            | FREE_THROW NUM OF NUM
+            | FLAGRANT_FREE_THROW
+            | FLAGRANT_FREE_THROW NUM OF NUM
+            | CLEAR_PATH_FREE_THROW NUM OF NUM
+            | TECHNICAL_FREE_THROW
+            ;
+
 shot_type:  JUMP_SHOT
             | LAYUP
             | HOOK_SHOT
             | DUNK
             | TIP_IN
+            ;
+
+shotloc:    FROM NUM FEET
+            | AT_RIM
+            |
+            ;
+
+shotextra:  block
+            | assist
+            |
             ;
 
 block:      BLOCK BY player
@@ -240,15 +243,12 @@ block:      BLOCK BY player
 assist:     ASSIST BY player
             ;
 
-player:     STR                                             { data.player_1 = $1; }
+turnover:   TURNOVER BY turnovere turnoverc
             ;
 
 turnovere:  player
             | TEAM
             |                                               { BAD; }
-            ;
-
-turnover:   TURNOVER BY turnovere turnoverc
             ;
 
 turnoverc:  SHOT_CLOCK
@@ -297,29 +297,16 @@ turnoverc:  SHOT_CLOCK
 steal:      STEAL BY player
             ;
 
-foulon:     player
-
-foulby:     player
-
-foulplrs:   foulby
-            | foulby DRAWN_BY foulon
-            |                                   { BAD; }
-            ;
-
 foul:       foulname BY foulplrs
             | foulname BY TEAM
             | doublefoul BY player AND player
             | doublefoul BY TEAM
             ;
 
-doublefoul: DOUBLE foulname
-            ;
-
 foulname:   foultype FOUL
             | FLAGRANT FOUL TYPE NUM
             | DEFENSIVE_THREE_SECONDS
             ;
-
 
 foultype:   SHOOTING
             | OFFENSIVE
@@ -344,6 +331,18 @@ techtype: TAUNTING
            | EXCESS_TIMEOUT
            |
            ;
+
+foulplrs:   foulby
+            | foulby DRAWN_BY foulon
+            |                                   { BAD; }
+            ;
+
+foulby:     player
+
+foulon:     player
+
+doublefoul: DOUBLE foulname
+            ;
 
 timeout:    team FULL_TIMEOUT
             | OFFICIAL_TIMEOUT
