@@ -40,11 +40,11 @@ vs\.                    return VS;
 gains\ possession       return GAIN_POSSESSION;
 misses                  return MISS;
 makes                   return MAKE;
-jump\ shot              return SHOT_TYPE_JUMP_SHOT;
+jump\ shot              return JUMP_SHOT;
 from                    return FROM;
 ft                      return FEET;
 block                   return BLOCK;
-layup                   return SHOT_TYPE_LAYUP;
+layup                   return LAYUP;
 assist                  return ASSIST;
 [tT]eam                 return TEAM;
 [tT]urnover             return TURNOVER;
@@ -53,9 +53,9 @@ bad\ pass               return BAD_PASS;
 steal                   return STEAL;
 lost\ ball              return LOST_BALL;
 
-hook\ shot              return SHOT_TYPE_HOOK_SHOT;
-dunk                    return SHOT_TYPE_DUNK;
-tip-in                  return SHOT_TYPE_TIP_IN;
+hook\ shot              return HOOK_SHOT;
+dunk                    return DUNK;
+tip-in                  return TIP_IN;
 
 [sS]hooting\ foul               return FOUL_TYPE_SHOOTING;
 [oO]ffensive\ foul              return FOUL_TYPE_OFFENSIVE;

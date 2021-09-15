@@ -73,11 +73,11 @@
 %token STEAL;
 %token LOST_BALL;
 
-%token SHOT_TYPE_JUMP_SHOT
-%token SHOT_TYPE_LAYUP
-%token SHOT_TYPE_HOOK_SHOT
-%token SHOT_TYPE_DUNK
-%token SHOT_TYPE_TIP_IN
+%token JUMP_SHOT
+%token LAYUP
+%token HOOK_SHOT
+%token DUNK
+%token TIP_IN
 
 %token FOUL_TYPE_SHOOTING
 %token FOUL_TYPE_OFFENSIVE
@@ -221,11 +221,11 @@ shotres:    MISS
             | MAKE
             ;
 
-shot_type:  SHOT_TYPE_JUMP_SHOT
-            | SHOT_TYPE_LAYUP
-            | SHOT_TYPE_HOOK_SHOT
-            | SHOT_TYPE_DUNK
-            | SHOT_TYPE_TIP_IN
+shot_type:  JUMP_SHOT
+            | LAYUP
+            | HOOK_SHOT
+            | DUNK
+            | TIP_IN
             ;
 
 block:      BLOCK BY player
