@@ -94,7 +94,6 @@
 %token DEFENSIVE_THREE_SECONDS
 %token FLAGRANT
 %token DEFENSIVE_3_SECOND_TECH
-%token DOUBLE_TECHNICAL
 %token TAUNTING_TECHNICAL
 %token DELAY_TECHNICAL
 %token NON_UNSPORT_TECHNICAL
@@ -136,7 +135,6 @@
 %token THREE_SECOND FIVE_SECOND EIGHT_SECOND
 %token ILLEGAL_SCREEN
 %token JUMP_BALL_VIOLATION
-%token DOUBLE_PERSONAL
 %token SWINGING_ELBOWS
 %token SCORE_IN_OPP_BASKET
 %token TWENTY_SECOND_TIMEOUT
@@ -146,6 +144,7 @@
 %token TIMEOUT
 %token EXCESSIVE_TIMEOUT
 %token ENTER_BASKET_FROM_BELOW
+%token DOUBLE
 
 %%
 
@@ -281,7 +280,7 @@ turnoverc:  SHOT_CLOCK
             | ILLEGAL_SCREEN
             | JUMP_BALL_VIOLATION
             | JUMP_BALL_VIOLATION steal
-            | DOUBLE_PERSONAL
+            | DOUBLE PERSONAL
             | SWINGING_ELBOWS
             | SCORE_IN_OPP_BASKET
             | POSS LOST_BALL
@@ -312,8 +311,7 @@ foul:       foulname BY foulplrs
             | doublefoul BY TEAM
             ;
 
-doublefoul: DOUBLE_TECHNICAL FOUL
-            | DOUBLE_PERSONAL FOUL
+doublefoul: DOUBLE foulname
             ;
 
 foulname:   foultype FOUL

@@ -74,13 +74,12 @@ foul                    return FOUL;
 [dD]efensive\ three\ seconds    return DEFENSIVE_THREE_SECONDS;
 [fF]lagrant               return FLAGRANT;
 [dD]ef\ 3\ sec\ tech return DEFENSIVE_3_SECOND_TECH;
-[dD]ouble\ technical         return DOUBLE_TECHNICAL;
 [tT]aunting\ technical         return TAUNTING_TECHNICAL;
-[dD]ouble\ personal         return DOUBLE_PERSONAL;
 [dD]elay\ tech         return DELAY_TECHNICAL;
 Non\ unsport\ tech         return NON_UNSPORT_TECHNICAL;
 Hanging\ tech         return HANGING_TECHNICAL;
 Excess\ timeout\ tech        return EXCESS_TIMEOUT_TECHNICAL;
+[dD]ouble                return DOUBLE;
 
 type                            return TYPE;
 
