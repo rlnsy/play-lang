@@ -301,8 +301,8 @@ foulon:     player
 
 foulby:     player
 
-foulplrs:   foulon
-            | foulon DRAWN_BY foulby
+foulplrs:   foulby
+            | foulby DRAWN_BY foulon
             |                                   { BAD; }
             ;
 
