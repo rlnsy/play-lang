@@ -46,16 +46,14 @@
 %type<num> NUM
 %type<str> STR
 
+%token ASSIST
 %token NUM
 %token STR
-
 %token START
 %token END
 %token QUARTER
-
 %token REBOUND
 %token DEFENSIVE
-
 %token DEFENSIVE_REBOUND
 %token BY
 %token JUMP_BALL
@@ -67,20 +65,17 @@
 %token FROM;
 %token FEET;
 %token BLOCK;
-%token ASSIST;
 %token TEAM;
 %token TURNOVER;
 %token SHOT_CLOCK;
 %token BAD_PASS;
 %token STEAL;
 %token LOST_BALL;
-
 %token JUMP_SHOT
 %token LAYUP
 %token HOOK_SHOT
 %token DUNK
 %token TIP_IN
-
 %token SHOOTING
 %token OFFENSIVE
 %token LOOSE_BALL
@@ -101,10 +96,7 @@
 %token NON_UNSPORT
 %token HANGING
 %token EXCESS_TIMEOUT
-
-
 %token FOUL
-
 %token DRAWN_BY
 %token AT_RIM
 %token FREE_THROW

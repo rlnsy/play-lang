@@ -13,8 +13,10 @@ digit   [0-9]
 %%
                /* RULES */
 
+    /* Skip these characters */
 [:; \(\)]              ;
 
+    /* Recognized whitespace, pass them along */
 \t                      return *yytext;                           ;
 \n                      return *yytext;                           ;
 
@@ -23,75 +25,77 @@ digit   [0-9]
                             return NUM;
                         }
 
+    /* Friendly english representations of numeric indices */
 {digit}+(st|nd|rd|th)   {
                             RSTRIP_NUM(2);
                             return NUM;
                         }
 
-[sS]tart\ of            return START;
-[eE]nd\ of              return END;
-quarter                 return QUARTER;
+    /* Point description */
+(2|3)-pt                {
+                            RSTRIP_NUM(3);
+                            return PTS;
+                        }
 
-[dD]efensive            return DEFENSIVE;
-[rR]ebound              return REBOUND;
-by                      return BY;
-[jJ]ump\ ball           return JUMP_BALL;
-vs\.                    return VS;
-gains\ possession       return GAIN_POSSESSION;
-misses                  return MISS;
-makes                   return MAKE;
-jump\ shot              return JUMP_SHOT;
-from                    return FROM;
-ft                      return FEET;
-block                   return BLOCK;
-layup                   return LAYUP;
-assist                  return ASSIST;
-[tT]eam                 return TEAM;
-[tT]urnover             return TURNOVER;
-shot\ clock             return SHOT_CLOCK;
-bad\ pass               return BAD_PASS;
-steal                   return STEAL;
-lost\ ball              return LOST_BALL;
-
-hook\ shot              return HOOK_SHOT;
-dunk                    return DUNK;
-tip-in                  return TIP_IN;
-
-foul                    return FOUL;
-
-[sS]hooting               return SHOOTING;
-[oO]ffensive              return OFFENSIVE;
-[lL]oose\ ball            return LOOSE_BALL;
-[pP]ersonal               return PERSONAL;
-[pP]ersonal\ take         return PERSONAL_TAKE;
-[aA]way\ from\ play       return AWAY_FROM_PLAY;
-[pP]ersonal\ block        return PERSONAL_BLOCK;
-[oO]ffensive\ charge      return OFFENSIVE_CHARGE;
-[sS]hooting\ block        return SHOOTING_BLOCK;
-[pP]unching               return PUNCHING;
-[cC]lear\ path            return CLEAR_PATH;
-[tT]ech(nical)?           return TECHNICAL;
+    /* Other patterns */
+[sS]tart\ of                    return START;
+[eE]nd\ of                      return END;
+quarter                         return QUARTER;
+[dD]efensive                    return DEFENSIVE;
+[rR]ebound                      return REBOUND;
+by                              return BY;
+[jJ]ump\ ball                   return JUMP_BALL;
+vs\.                            return VS;
+gains\ possession               return GAIN_POSSESSION;
+misses                          return MISS;
+makes                           return MAKE;
+jump\ shot                      return JUMP_SHOT;
+from                            return FROM;
+ft                              return FEET;
+block                           return BLOCK;
+layup                           return LAYUP;
+assist                          return ASSIST;
+[tT]eam                         return TEAM;
+[tT]urnover                     return TURNOVER;
+shot\ clock                     return SHOT_CLOCK;
+bad\ pass                       return BAD_PASS;
+steal                           return STEAL;
+lost\ ball                      return LOST_BALL;
+hook\ shot                      return HOOK_SHOT;
+dunk                            return DUNK;
+tip-in                          return TIP_IN;
+foul                            return FOUL;
+[sS]hooting                     return SHOOTING;
+[oO]ffensive                    return OFFENSIVE;
+[lL]oose\ ball                  return LOOSE_BALL;
+[pP]ersonal                     return PERSONAL;
+[pP]ersonal\ take               return PERSONAL_TAKE;
+[aA]way\ from\ play             return AWAY_FROM_PLAY;
+[pP]ersonal\ block              return PERSONAL_BLOCK;
+[oO]ffensive\ charge            return OFFENSIVE_CHARGE;
+[sS]hooting\ block              return SHOOTING_BLOCK;
+[pP]unching                     return PUNCHING;
+[cC]lear\ path                  return CLEAR_PATH;
+[tT]ech(nical)?                 return TECHNICAL;
 [dD]efensive\ three\ seconds    return DEFENSIVE_THREE_SECONDS;
-[fF]lagrant               return FLAGRANT;
-[dD]ef\ 3\ sec\ tech return DEFENSIVE_3_SECOND_TECH;
-[tT]aunting             return TAUNTING;
-[dD]elay         return DELAY;
-Non\ unsport         return NON_UNSPORT;
-Hanging         return HANGING;
-Excess\ timeout        return EXCESS_TIMEOUT;
-[dD]ouble                return DOUBLE;
-
+[fF]lagrant                     return FLAGRANT;
+[dD]ef\ 3\ sec\ tech            return DEFENSIVE_3_SECOND_TECH;
+[tT]aunting                     return TAUNTING;
+[dD]elay                        return DELAY;
+Non\ unsport                    return NON_UNSPORT;
+Hanging                         return HANGING;
+Excess\ timeout                 return EXCESS_TIMEOUT;
+[dD]ouble                       return DOUBLE;
 type                            return TYPE;
-
-drawn\ by                return DRAWN_BY;
-at\ rim                  return AT_RIM;
-of                       return OF;
-free\ throw              return FREE_THROW;
-flagrant\ free\ throw    return FLAGRANT_FREE_THROW;
-clear\ path\ free\ throw return CLEAR_PATH_FREE_THROW;
-full\ timeout            return FULL_TIMEOUT;
-Official\ timeout        return OFFENSIVEICIAL_TIMEOUT;
-20\ second\ timeout        return TWENTY_SECOND_TIMEOUT;
+drawn\ by                       return DRAWN_BY;
+at\ rim                         return AT_RIM;
+of                              return OF;
+free\ throw                     return FREE_THROW;
+flagrant\ free\ throw           return FLAGRANT_FREE_THROW;
+clear\ path\ free\ throw        return CLEAR_PATH_FREE_THROW;
+full\ timeout                   return FULL_TIMEOUT;
+Official\ timeout               return OFFENSIVEICIAL_TIMEOUT;
+20\ second\ timeout             return TWENTY_SECOND_TIMEOUT;
 enters\ the\ game\ for          return SUBSTITUTE;
 traveling                       return TRAVEL;
 (off|offensive)\ goaltending    return OFFENSIVE_GOALTEND;
@@ -134,16 +138,11 @@ excessive\ timeout              return EXCESSIVE_TIMEOUT;
 enter\ basket\ from\ below      return ENTER_BASKET_FROM_BELOW;
 
 
-{digit}-pt              {
-                            RSTRIP_NUM(3);
-                            return PTS;
-                        }
-
+    /* This is an arbitrary length string of allowed characters */
 [^:; \(\)\t\n]+         {
                             yylval.str = strdup(yytext);
                             return STR;
                         }
-
 %%
             /* SUBROUTINES */
 
