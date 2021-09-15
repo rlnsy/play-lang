@@ -94,11 +94,12 @@
 %token DEFENSIVE_THREE_SECONDS
 %token FLAGRANT
 %token DEFENSIVE_3_SECOND_TECH
-%token TAUNTING_TECHNICAL
-%token DELAY_TECHNICAL
-%token NON_UNSPORT_TECHNICAL
-%token HANGING_TECHNICAL
-%token EXCESS_TIMEOUT_TECHNICAL
+%token TAUNTING
+%token DELAY
+%token NON_UNSPORT
+%token HANGING
+%token EXCESS_TIMEOUT
+
 
 %token FOUL
 
@@ -332,14 +333,17 @@ foultype:   SHOOTING
             | INBOUND
             | PUNCHING
             | CLEAR_PATH
-            | TECHNICAL
+            | techtype TECHNICAL
             | DEFENSIVE_3_SECOND_TECH
-            | TAUNTING_TECHNICAL
-            | DELAY_TECHNICAL
-            | NON_UNSPORT_TECHNICAL
-            | HANGING_TECHNICAL
-            | EXCESS_TIMEOUT_TECHNICAL
             ;
+
+techtype: TAUNTING
+           | DELAY
+           | NON_UNSPORT
+           | HANGING
+           | EXCESS_TIMEOUT
+           |
+           ;
 
 timeout:    team FULL_TIMEOUT
             | OFFICIAL_TIMEOUT
