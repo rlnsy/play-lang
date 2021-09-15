@@ -49,16 +49,16 @@
 %token NUM
 %token STR
 
-%token Q_START
-%token Q_END
-%token Q_QTR
+%token START
+%token END
+%token QUARTER
 
-%token DEF_RBND
-%token OFF_RBND
+%token DEFENSIVE_REBOUND
+%token OFF_REBOUND
 %token BY
-%token JMP_BALL
+%token JUMP_BALL
 %token VS
-%token GAIN_POSS
+%token GAIN_POSSESSION
 %token PTS
 %token MISS;
 %token MAKE;
@@ -94,7 +94,7 @@
 %token FOUL_TYPE_TECHNICAL
 %token FOUL_TYPE_DEFENSIVE_THREE_SECONDS
 %token FOUL_TYPE_FLAGRANT
-%token FOUL_TYPE_DEF_3_SEC_TECH
+%token FOUL_TYPE_DEFENSIVE_3_SECOND_TECH
 %token FOUL_TYPE_DOUBLE_TECHNICAL
 %token FOUL_TYPE_TAUNTING_TECHNICAL
 %token FOUL_TYPE_DOUBLE_PERSONAL
@@ -109,7 +109,7 @@
 %token FLAGRANT_FREE_THROW CLEAR_PATH_FREE_THROW TECHNICAL_FREE_THROW
 %token OF
 %token FULL_TIMEOUT
-%token SUB
+%token SUBSTITUTE
 %token TRAVEL
 %token OFFENSIVE_GOALTEND DEFENSIVE_GOALTEND
 %token VIOLATION
@@ -133,13 +133,13 @@
 %token PUNCHED_BALL
 %token LANE
 %token OFFICIAL_TIMEOUT
-%token THREE_SEC FIVE_SEC EIGHT_SEC
+%token THREE_SECOND FIVE_SECOND EIGHT_SECOND
 %token ILLEGAL_SCREEN
 %token JUMP_BALL_VIOLATION
 %token DOUBLE_PERSONAL
 %token SWINGING_ELBOWS
 %token SCORE_IN_OPP_BASKET
-%token TWENTY_SEC_TIMEOUT
+%token TWENTY_SECOND_TIMEOUT
 %token POSS
 %token AND
 %token NO
@@ -173,20 +173,20 @@ play:       clockevt
             | MISS FREE_THROW NUM OF NUM                   { BAD; }
             ;
 
-clockevt:   Q_START NUM Q_QTR                              { state.quarter = $2; }
-            | Q_END NUM Q_QTR
-            | Q_START NUM OVERTIME                         { state.quarter = 4 + $2; }
-            | Q_END NUM OVERTIME
+clockevt:   START NUM QUARTER                              { state.quarter = $2; }
+            | END NUM QUARTER
+            | START NUM OVERTIME                         { state.quarter = 4 + $2; }
+            | END NUM OVERTIME
             ;
 
-jumpball:   JMP_BALL player VS player
-            | JMP_BALL player VS player player GAIN_POSS
-            | JMP_BALL VS                                   { BAD; }
-            | JMP_BALL player VS                            { BAD; }
+jumpball:   JUMP_BALL player VS player
+            | JUMP_BALL player VS player player GAIN_POSSESSION
+            | JUMP_BALL VS                                   { BAD; }
+            | JUMP_BALL player VS                            { BAD; }
             ;
 
-rbndtype:   DEF_RBND
-            | OFF_RBND
+rbndtype:   DEFENSIVE_REBOUND
+            | OFF_REBOUND
             ;
 
 rebounder:  player
@@ -258,9 +258,9 @@ turnoverc:  SHOT_CLOCK
             | BAD_PASS
             | STEP_OUT_OF_BOUNDS
             | DISCONTINUED_DRIBBLE
-            | THREE_SEC
-            | FIVE_SEC
-            | EIGHT_SEC
+            | THREE_SECOND
+            | FIVE_SECOND
+            | EIGHT_SECOND
             | BACK_COURT
             | DOUBLE_DRIBBLE
             | PALMING
@@ -270,7 +270,7 @@ turnoverc:  SHOT_CLOCK
             | ILLEGAL_ASSIST
             | TURNOVER steal
             | PUNCHED_BALL
-            | FIVE_SEC INBOUND
+            | FIVE_SECOND INBOUND
             | KICKED_BALL
             | ILLEGAL_SCREEN
             | JUMP_BALL_VIOLATION
@@ -325,7 +325,7 @@ foultype:   FOUL_TYPE_SHOOTING
             | FOUL_TYPE_CLEAR_PATH
             | FOUL_TYPE_TECHNICAL
             | FOUL_TYPE_DEFENSIVE_THREE_SECONDS
-            | FOUL_TYPE_DEF_3_SEC_TECH
+            | FOUL_TYPE_DEFENSIVE_3_SECOND_TECH
             | FOUL_TYPE_TAUNTING_TECHNICAL
             | FOUL_TYPE_DELAY_TECHNICAL
             | FOUL_TYPE_NON_UNSPORT_TECHNICAL
@@ -335,7 +335,7 @@ foultype:   FOUL_TYPE_SHOOTING
 
 timeout:    team FULL_TIMEOUT
             | OFFICIAL_TIMEOUT
-            | team TWENTY_SEC_TIMEOUT
+            | team TWENTY_SECOND_TIMEOUT
             | team NO TIMEOUT
             | FULL_TIMEOUT
             ;
@@ -344,8 +344,8 @@ team:       STR
             | STR STR
             ;
 
-substitution: player SUB player
-                | player SUB                            { BAD; }
+substitution: player SUBSTITUTE player
+                | player SUBSTITUTE                            { BAD; }
                 ;
 
 violation:  VIOLATION BY TEAM teamv;
@@ -356,13 +356,13 @@ violation:  VIOLATION BY TEAM teamv;
 teamv:      DEFENSIVE_GOALTEND
             | DELAY_OF_GAME
             | KICKED_BALL
-            | JMP_BALL
+            | JUMP_BALL
             | VIOLATION
             | DOUBLE_LANE
             ;
 
 playerv:    DOUBLE_LANE
-            | JMP_BALL
+            | JUMP_BALL
             | DEFENSIVE_GOALTEND
             | KICKED_BALL
             | LANE
