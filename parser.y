@@ -54,7 +54,7 @@
 %token QUARTER
 
 %token DEFENSIVE_REBOUND
-%token OFF_REBOUND
+%token OFFENSIVE_REBOUND
 %token BY
 %token JUMP_BALL
 %token VS
@@ -132,7 +132,7 @@
 %token ILLEGAL_ASSIST
 %token PUNCHED_BALL
 %token LANE
-%token OFFICIAL_TIMEOUT
+%token OFFENSIVEICIAL_TIMEOUT
 %token THREE_SECOND FIVE_SECOND EIGHT_SECOND
 %token ILLEGAL_SCREEN
 %token JUMP_BALL_VIOLATION
@@ -182,7 +182,7 @@ rebound:    rbndtype BY rebounder
             ;
 
 rbndtype:   DEFENSIVE_REBOUND
-            | OFF_REBOUND
+            | OFFENSIVE_REBOUND
             ;
 
 rebounder:  player
@@ -345,7 +345,7 @@ doublefoul: DOUBLE foulname
             ;
 
 timeout:    team FULL_TIMEOUT
-            | OFFICIAL_TIMEOUT
+            | OFFENSIVEICIAL_TIMEOUT
             | team TWENTY_SECOND_TIMEOUT
             | team NO TIMEOUT
             | FULL_TIMEOUT
