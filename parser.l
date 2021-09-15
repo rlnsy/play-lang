@@ -32,8 +32,8 @@ digit   [0-9]
 [eE]nd\ of              return END;
 quarter                 return QUARTER;
 
-[dD]efensive\ rebound   return DEFENSIVE_REBOUND;
-[oO]ffensive\ rebound   return OFFENSIVE_REBOUND;
+[dD]efensive            return DEFENSIVE;
+[rR]ebound              return REBOUND;
 by                      return BY;
 [jJ]ump\ ball           return JUMP_BALL;
 vs\.                    return VS;

@@ -53,8 +53,10 @@
 %token END
 %token QUARTER
 
+%token REBOUND
+%token DEFENSIVE
+
 %token DEFENSIVE_REBOUND
-%token OFFENSIVE_REBOUND
 %token BY
 %token JUMP_BALL
 %token VS
@@ -178,11 +180,11 @@ clockevt:   START NUM QUARTER                              { state.quarter = $2;
             | END NUM OVERTIME
             ;
 
-rebound:    rbndtype BY rebounder
+rebound:    rbndtype REBOUND BY rebounder
             ;
 
-rbndtype:   DEFENSIVE_REBOUND
-            | OFFENSIVE_REBOUND
+rbndtype:   DEFENSIVE
+            | OFFENSIVE
             ;
 
 rebounder:  player
