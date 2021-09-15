@@ -170,7 +170,6 @@ play:       clockevt
             | violation
             | replay
             | ejection
-            | MISS FREE_THROW NUM OF NUM                   { BAD; }
             ;
 
 clockevt:   START NUM QUARTER                              { state.quarter = $2; }
@@ -179,11 +178,14 @@ clockevt:   START NUM QUARTER                              { state.quarter = $2;
             | END NUM OVERTIME
             ;
 
-jumpball:   JUMP_BALL player VS player
-            | JUMP_BALL player VS player player GAIN_POSSESSION
+jumpball:   JUMP_BALL player VS player jumpballres
             | JUMP_BALL VS                                   { BAD; }
             | JUMP_BALL player VS                            { BAD; }
             ;
+
+jumpballres: player GAIN_POSSESSION
+                |
+                ;
 
 rbndtype:   DEFENSIVE_REBOUND
             | OFF_REBOUND
@@ -214,7 +216,11 @@ shot:       PTS shot_type shotloc shotextra
             | TECHNICAL_FREE_THROW
             ;
 
-shotattmpt: player shotres shot
+shotattmpt: shooter shotres shot
+            ;
+
+shooter:    player
+            |                                               { BAD; }
             ;
 
 shotres:    MISS
@@ -239,10 +245,10 @@ player:     STR                                             { data.player_1 = $1
 
 turnovere:  player
             | TEAM
+            |                                               { BAD; }
             ;
 
 turnover:   TURNOVER BY turnovere turnoverc
-            | TURNOVER BY turnoverc                         { BAD; }
             ;
 
 turnoverc:  SHOT_CLOCK
