@@ -79,29 +79,29 @@
 %token DUNK
 %token TIP_IN
 
-%token FOUL_TYPE_SHOOTING
-%token FOUL_TYPE_OFFENSIVE
-%token FOUL_TYPE_LOOSE_BALL
-%token FOUL_TYPE_PERSONAL
-%token FOUL_TYPE_PERSONAL_TAKE
-%token FOUL_TYPE_AWAY_FROM_PLAY
-%token FOUL_TYPE_PERSONAL_BLOCK
-%token FOUL_TYPE_OFFENSIVE_CHARGE
-%token FOUL_TYPE_SHOOTING_BLOCK
-%token FOUL_TYPE_INBOUND
-%token FOUL_TYPE_PUNCHING
-%token FOUL_TYPE_CLEAR_PATH
-%token FOUL_TYPE_TECHNICAL
-%token FOUL_TYPE_DEFENSIVE_THREE_SECONDS
-%token FOUL_TYPE_FLAGRANT
-%token FOUL_TYPE_DEFENSIVE_3_SECOND_TECH
-%token FOUL_TYPE_DOUBLE_TECHNICAL
-%token FOUL_TYPE_TAUNTING_TECHNICAL
-%token FOUL_TYPE_DOUBLE_PERSONAL
-%token FOUL_TYPE_DELAY_TECHNICAL
-%token FOUL_TYPE_NON_UNSPORT_TECHNICAL
-%token FOUL_TYPE_HANGING_TECHNICAL
-%token FOUL_TYPE_EXCESS_TIMEOUT_TECHNICAL
+%token SHOOTING_FOUL
+%token OFFENSIVE_FOUL
+%token LOOSE_BALL_FOUL
+%token PERSONAL_FOUL
+%token PERSONAL_TAKE_FOUL
+%token AWAY_FROM_PLAY_FOUL
+%token PERSONAL_BLOCK_FOUL
+%token OFFENSIVE_CHARGE_FOUL
+%token SHOOTING_BLOCK_FOUL
+%token INBOUND_FOUL
+%token PUNCHING_FOUL
+%token CLEAR_PATH_FOUL
+%token TECHNICAL_FOUL
+%token DEFENSIVE_THREE_SECONDS_FOUL
+%token FLAGRANT_FOUL
+%token DEFENSIVE_3_SECOND_TECH_FOUL
+%token DOUBLE_TECHNICAL_FOUL
+%token TAUNTING_TECHNICAL_FOUL
+%token DOUBLE_PERSONAL_FOUL
+%token DELAY_TECHNICAL_FOUL
+%token NON_UNSPORT_TECHNICAL_FOUL
+%token HANGING_TECHNICAL_FOUL
+%token EXCESS_TIMEOUT_TECHNICAL_FOUL
 
 %token DRAWN_BY
 %token AT_RIM
@@ -249,7 +249,7 @@ turnoverc:  SHOT_CLOCK
             | BAD_PASS steal
             | LOST_BALL steal
             | LOST_BALL
-            | FOUL_TYPE_OFFENSIVE
+            | OFFENSIVE_FOUL
             | TRAVEL
             | TRAVEL steal
             | OFFENSIVE_GOALTEND
@@ -282,7 +282,7 @@ turnoverc:  SHOT_CLOCK
             | POSS LOST_BALL steal
             | NO steal
             | EXCESSIVE_TIMEOUT
-            | FOUL_TYPE_OFFENSIVE steal
+            | OFFENSIVE_FOUL steal
             | ENTER_BASKET_FROM_BELOW
             | OUT_OF_BOUNDS LOST_BALL steal
             | NO                                { BAD; }
@@ -301,36 +301,36 @@ foulplrs:   foulon
             ;
 
 foul:       foultype BY foulplrs
-            | FOUL_TYPE_FLAGRANT TYPE NUM BY foulplrs
+            | FLAGRANT_FOUL TYPE NUM BY foulplrs
             | foultype BY TEAM
             | doublefoul BY player AND player
             | doublefoul BY TEAM
             ;
 
-doublefoul: FOUL_TYPE_DOUBLE_TECHNICAL
-            | FOUL_TYPE_DOUBLE_PERSONAL
+doublefoul: DOUBLE_TECHNICAL_FOUL
+            | DOUBLE_PERSONAL_FOUL
             ;
 
-foultype:   FOUL_TYPE_SHOOTING
-            | FOUL_TYPE_OFFENSIVE
-            | FOUL_TYPE_LOOSE_BALL
-            | FOUL_TYPE_PERSONAL
-            | FOUL_TYPE_PERSONAL_TAKE
-            | FOUL_TYPE_AWAY_FROM_PLAY
-            | FOUL_TYPE_PERSONAL_BLOCK
-            | FOUL_TYPE_OFFENSIVE_CHARGE
-            | FOUL_TYPE_SHOOTING_BLOCK
-            | FOUL_TYPE_INBOUND
-            | FOUL_TYPE_PUNCHING
-            | FOUL_TYPE_CLEAR_PATH
-            | FOUL_TYPE_TECHNICAL
-            | FOUL_TYPE_DEFENSIVE_THREE_SECONDS
-            | FOUL_TYPE_DEFENSIVE_3_SECOND_TECH
-            | FOUL_TYPE_TAUNTING_TECHNICAL
-            | FOUL_TYPE_DELAY_TECHNICAL
-            | FOUL_TYPE_NON_UNSPORT_TECHNICAL
-            | FOUL_TYPE_HANGING_TECHNICAL
-            | FOUL_TYPE_EXCESS_TIMEOUT_TECHNICAL
+foultype:   SHOOTING_FOUL
+            | OFFENSIVE_FOUL
+            | LOOSE_BALL_FOUL
+            | PERSONAL_FOUL
+            | PERSONAL_TAKE_FOUL
+            | AWAY_FROM_PLAY_FOUL
+            | PERSONAL_BLOCK_FOUL
+            | OFFENSIVE_CHARGE_FOUL
+            | SHOOTING_BLOCK_FOUL
+            | INBOUND_FOUL
+            | PUNCHING_FOUL
+            | CLEAR_PATH_FOUL
+            | TECHNICAL_FOUL
+            | DEFENSIVE_THREE_SECONDS_FOUL
+            | DEFENSIVE_3_SECOND_TECH_FOUL
+            | TAUNTING_TECHNICAL_FOUL
+            | DELAY_TECHNICAL_FOUL
+            | NON_UNSPORT_TECHNICAL_FOUL
+            | HANGING_TECHNICAL_FOUL
+            | EXCESS_TIMEOUT_TECHNICAL_FOUL
             ;
 
 timeout:    team FULL_TIMEOUT
