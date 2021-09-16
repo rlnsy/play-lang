@@ -27,20 +27,24 @@
         state.quarter = 1;
     }
 
+#define DISPLAY
+
+#define EMPTY_STR ""
+#define maybe(str) (str ? str : EMPTY_STR) 
+
     void display() {
         parsed_count++;
 #ifdef DISPLAY
-        printf("%d,%s,%d,%s,%s\n", parsed_count,
+        printf("%d,%s,%d,%s\n", parsed_count,
             data.game,
             state.quarter,
-            data.player_1,
-            data.team_name
+            maybe(data.player_1)
         );
 #endif
         init();
     }
 
-    #define BAD NULL
+#define BAD NULL
 %}
 
 %union {
