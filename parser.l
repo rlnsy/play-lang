@@ -13,12 +13,17 @@ digit   [0-9]
 %%
                /* RULES */
 
+{digit}+:{digit}+\.{digit}+     return TIMESTAMP;
+
     /* Skip these characters */
 [:; \(\)]              ;
 
     /* Recognized whitespace, pass them along */
 \t                      return *yytext;                           ;
 \n                      return *yytext;                           ;
+
+
+\|                      return SEP;
 
 {digit}+                {
                             yylval.num = atoi(yytext);
@@ -136,10 +141,11 @@ no                              return NO;
 timeout                         return TIMEOUT;
 excessive\ timeout              return EXCESSIVE_TIMEOUT;
 enter\ basket\ from\ below      return ENTER_BASKET_FROM_BELOW;
+NA                              return NONE;
 
 
     /* This is an arbitrary length string of allowed characters */
-[^:; \(\)\t\n]+         {
+[^:; \(\)\t\n\|]+       {
                             yylval.str = strdup(yytext);
                             return STR;
                         }

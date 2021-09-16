@@ -92,3 +92,6 @@
 %token EXCESSIVE_TIMEOUT
 %token ENTER_BASKET_FROM_BELOW
 %token DOUBLE
+%token SEP
+%token NONE
+%token TIMESTAMP

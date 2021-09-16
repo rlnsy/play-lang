@@ -20,6 +20,11 @@
 
     void init() {
         memset(&data, 0, sizeof(data));
+
+        // This is initialized to the real first value 1,
+        // since there is no explicit first set in practice
+        // That is, the quarter is assumed to be 1 at the start
+        state.quarter = 1;
     }
 
     void display() {
@@ -52,8 +57,17 @@ plays:	    plays playl
             |
             ;
 
-playl:      game '\t' play '\n'                             { display();}
+playl:      game SEP playqtr SEP playtime SEP playteam SEP playdiff SEP play '\n' { display();}
+
+playqtr:    NUM
+
+playtime:   TIMESTAMP
+
+playteam:   NUM
+            | NONE
             ;
+
+playdiff:   NUM
 
 game:       STR                                             { data.game = $1; }
             ;
