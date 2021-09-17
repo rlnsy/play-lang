@@ -8,6 +8,6 @@ extern int parsed_count;
 int main(void) {
     init();
     yyparse();
-    printf("parsed: %d\n", parsed_count);
+    fprintf(stderr, "parsed: %d\n", parsed_count);
     return 0;
 }

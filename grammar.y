@@ -2,6 +2,8 @@
 %{
 	#include <stdio.h>
     #include <string.h>
+    #include <stdlib.h>
+
 	int yylex(void);
 	void yyerror(char *);
 	extern char *yytext;
@@ -27,16 +29,34 @@
         state.quarter = 1;
     }
 
+#define TABLE_NAME "plays"
+
 #define DISPLAY
 
-#define EMPTY_STR ""
-#define maybe(str) (str ? str : EMPTY_STR) 
+    char *str_buf;
+
+#define quote(str) ((str_buf = malloc(strlen(str) + 2)), \
+                        sprintf(str_buf, "\"%s\"", str), str_buf)
+
+#define maybe(str) (str ? quote(str) : "NULL")
 
     void display() {
         parsed_count++;
 #ifdef DISPLAY
-        printf("%d,%s,%d,%s\n", parsed_count,
-            data.game,
+        // record prefix
+        printf("insert into %s values("
+
+        // schema
+        "%d,%s,%d,%s"
+
+        // record suffix
+        ");\n",
+
+        TABLE_NAME,
+        parsed_count,
+
+        // data
+            quote(data.game),
             state.quarter,
             maybe(data.player_1)
         );
