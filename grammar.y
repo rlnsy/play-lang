@@ -16,8 +16,20 @@
 
     struct {
         char *game;
-        char *player_1;
-        char *team_name;
+        char *rebounder;
+        char *shooter;
+        char *blocked_by;
+        char *assist_by;
+        char *turnover_by;
+        char *steal_by;
+        char *double_foul_by_1;
+        char *double_foul_by_2;
+        char *foul_by;
+        char *foul_drawn_by;
+        char *sub_out;
+        char *sub_in;
+        char *violation_by;
+        char *ejected;
     } data;
 
     void init() {
@@ -47,7 +59,7 @@
         printf("insert into %s values("
 
         // schema
-        "%d,%s,%d,%s"
+        "%d,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -58,7 +70,20 @@
         // data
             quote(data.game),
             state.quarter,
-            maybe(data.player_1)
+            maybe(data.rebounder),
+            maybe(data.shooter),
+            maybe(data.blocked_by),
+            maybe(data.assist_by),
+            maybe(data.turnover_by),
+            maybe(data.steal_by),
+            maybe(data.double_foul_by_1),
+            maybe(data.double_foul_by_2),
+            maybe(data.foul_by),
+            maybe(data.foul_drawn_by),
+            maybe(data.sub_out),
+            maybe(data.sub_in),
+            maybe(data.violation_by),
+            maybe(data.ejected)
         );
 #endif
         init();
@@ -74,6 +99,7 @@
 
 %type<num> NUM
 %type<str> STR
+%type<str> player
 
 %%
 
@@ -122,7 +148,7 @@ rbndtype:   DEFENSIVE
             | OFFENSIVE
             ;
 
-rebounder:  player
+rebounder:  player                                          { data.rebounder = $1; }
             | TEAM
             ;
 
@@ -131,7 +157,7 @@ jumpball:   JUMP_BALL player VS player jumpballres
             | JUMP_BALL player VS                            { BAD; }
             ;
 
-player:     STR                                             { data.player_1 = $1; }
+player:     STR
             ;
 
 jumpballres: player GAIN_POSSESSION
@@ -141,7 +167,7 @@ jumpballres: player GAIN_POSSESSION
 shotattmpt: shooter shotres shot
             ;
 
-shooter:    player
+shooter:    player                                          { data.shooter = $1; }
             |                                               { BAD; }
             ;
 
@@ -174,16 +200,16 @@ shotextra:  block
             |
             ;
 
-block:      BLOCK BY player
+block:      BLOCK BY player                                 { data.blocked_by = $3; }
             ;
 
-assist:     ASSIST BY player
+assist:     ASSIST BY player                                { data.assist_by = $3; }
             ;
 
 turnover:   TURNOVER BY turnovere turnoverc
             ;
 
-turnovere:  player
+turnovere:  player                                          { data.turnover_by = $1; }
             | TEAM
             |                                               { BAD; }
             ;
@@ -231,12 +257,15 @@ turnoverc:  SHOT_CLOCK
             | NO                                { BAD; }
             ;
 
-steal:      STEAL BY player
+steal:      STEAL BY player                                 { data.steal_by = $3; }
             ;
 
 foul:       foulname BY foulplrs
             | foulname BY TEAM
-            | doublefoul BY player AND player
+            | doublefoul BY player AND player               {
+                                                                data.double_foul_by_1 = $3,
+                                                                data.double_foul_by_2 = $5;
+                                                            }
             | doublefoul BY TEAM
             ;
 
@@ -274,9 +303,9 @@ foulplrs:   foulby
             |                                   { BAD; }
             ;
 
-foulby:     player
+foulby:     player                              { data.foul_by = $1; }
 
-foulon:     player
+foulon:     player                              { data.foul_drawn_by = $1; }
 
 doublefoul: DOUBLE foulname
             ;
@@ -292,12 +321,12 @@ team:       STR
             | STR STR
             ;
 
-substitution: player SUBSTITUTE player
+substitution: player SUBSTITUTE player                         { data.sub_in = $1, data.sub_out = $3; }
                 | player SUBSTITUTE                            { BAD; }
                 ;
 
 violation:  VIOLATION BY TEAM teamv;
-            | VIOLATION BY player playerv
+            | VIOLATION BY player playerv                      { data.violation_by = $3; }
             | VIOLATION BY playerv                      { BAD; }
             ;
 
@@ -329,7 +358,7 @@ replay_result: RULING_STANDS
                 |
                 ;
 
-ejection:       player EJECTED
+ejection:       player EJECTED                              { data.ejected = $1; }
                 | TEAM EJECTED
                 | EJECTED                                   { BAD; }
                 ;
