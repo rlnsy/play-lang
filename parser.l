@@ -13,7 +13,12 @@ digit   [0-9]
 %%
                /* RULES */
 
-{digit}+:{digit}+\.{digit}+     return TIMESTAMP;
+{digit}+:{digit}+\.{digit}+     {
+                                    int min, sec, dec;
+                                    sscanf(yytext, "%d:%d.%d", &min, &sec, &dec);
+                                    yylval.x = (min * 60) + sec + (dec / 10.0);
+                                    return TIMESTAMP;
+                                }
 
     /* Skip these characters */
 [:; \(\)]              ;

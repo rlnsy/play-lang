@@ -16,6 +16,7 @@
 
     struct {
         char *game;
+        float time;
         char *rebounder;
         char *shooter;
         char *blocked_by;
@@ -56,10 +57,10 @@
         parsed_count++;
 #ifdef DISPLAY
         // record prefix
-        printf("insert into %s values("
+        printf("insert into %s values(%d"
 
         // schema
-        "%d,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
+        "%s,%d,%f,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -70,6 +71,7 @@
         // data
             quote(data.game),
             state.quarter,
+            data.time,
             maybe(data.rebounder),
             maybe(data.shooter),
             maybe(data.blocked_by),
@@ -95,11 +97,13 @@
 %union {
     char *str;
     int num;
+    float x;
 }
 
 %type<num> NUM
 %type<str> STR
 %type<str> player
+%type<x> TIMESTAMP
 
 %%
 
@@ -111,7 +115,7 @@ playl:      game SEP playqtr SEP playtime SEP playteam SEP playdiff SEP play '\n
 
 playqtr:    NUM
 
-playtime:   TIMESTAMP
+playtime:   TIMESTAMP                                       { data.time = $1; }
 
 playteam:   NUM
             | NONE
