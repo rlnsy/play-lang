@@ -11,11 +11,8 @@
     int parsed_count = 0;
 
     struct {
-        int quarter;
-    } state;
-
-    struct {
         char *game;
+        int quarter;
         float time;
         char *rebounder;
         char *shooter;
@@ -35,11 +32,6 @@
 
     void init() {
         memset(&data, 0, sizeof(data));
-
-        // This is initialized to the real first value 1,
-        // since there is no explicit first set in practice
-        // That is, the quarter is assumed to be 1 at the start
-        state.quarter = 1;
     }
 
 #define TABLE_NAME "plays"
@@ -70,7 +62,7 @@
 
         // data
             quote(data.game),
-            state.quarter,
+            data.quarter,
             data.time,
             maybe(data.rebounder),
             maybe(data.shooter),
@@ -113,7 +105,7 @@ plays:	    plays playl
 
 playl:      game SEP playqtr SEP playtime SEP playteam SEP playdiff SEP play '\n' { display();}
 
-playqtr:    NUM
+playqtr:    NUM                                             { data.quarter = $1; }
 
 playtime:   TIMESTAMP                                       { data.time = $1; }
 
@@ -139,9 +131,9 @@ play:       clockevt
             | ejection
             ;
 
-clockevt:   START NUM QUARTER                              { state.quarter = $2; }
+clockevt:   START NUM QUARTER
             | END NUM QUARTER
-            | START NUM OVERTIME                         { state.quarter = 4 + $2; }
+            | START NUM OVERTIME
             | END NUM OVERTIME
             ;
 
