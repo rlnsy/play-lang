@@ -1,0 +1,21 @@
+create table plays (
+    game text,
+    quarter integer,
+    time real,
+    team text,
+    rebounder text,
+    shooter text,
+    blocked_by text,
+    assist_by text,
+    turnover_by text,
+    steal_by text,
+    double_foul_by_1 text,
+    double_foul_by_2 text,
+    foul_by text,
+    foul_drawn_by text,
+    sub_out text,
+    sub_in text,
+    violation_by text,
+    ejected text,
+    primary key (game, quarter, time)
+);
