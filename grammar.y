@@ -308,7 +308,7 @@ doublefoul: DOUBLE foulname
             ;
 
 timeout:    team FULL_TIMEOUT
-            | OFFENSIVEICIAL_TIMEOUT
+            | OFFICIAL_TIMEOUT
             | team TWENTY_SECOND_TIMEOUT
             | team NO TIMEOUT
             | FULL_TIMEOUT

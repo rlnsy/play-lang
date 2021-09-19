@@ -104,7 +104,7 @@ free\ throw                     return FREE_THROW;
 flagrant\ free\ throw           return FLAGRANT_FREE_THROW;
 clear\ path\ free\ throw        return CLEAR_PATH_FREE_THROW;
 full\ timeout                   return FULL_TIMEOUT;
-Official\ timeout               return OFFENSIVEICIAL_TIMEOUT;
+Official\ timeout               return OFFICIAL_TIMEOUT;
 20\ second\ timeout             return TWENTY_SECOND_TIMEOUT;
 enters\ the\ game\ for          return SUBSTITUTE;
 traveling                       return TRAVEL;
