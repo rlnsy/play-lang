@@ -14,6 +14,7 @@
         char *game;
         int quarter;
         float time;
+        char *team;
         char *rebounder;
         char *shooter;
         char *blocked_by;
@@ -52,7 +53,7 @@
         printf("insert into %s values(%d"
 
         // schema
-        "%s,%d,%f,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
+        "%s,%d,%f,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -64,6 +65,7 @@
             quote(data.game),
             data.quarter,
             data.time,
+            maybe(data.team),
             maybe(data.rebounder),
             maybe(data.shooter),
             maybe(data.blocked_by),
@@ -109,7 +111,7 @@ playqtr:    NUM                                             { data.quarter = $1;
 
 playtime:   TIMESTAMP                                       { data.time = $1; }
 
-playteam:   NUM
+playteam:   STR                                             { data.team = $1; }
             | NONE
             ;
 
