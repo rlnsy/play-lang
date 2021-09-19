@@ -15,5 +15,14 @@
 #define CLOCKEVT_OSTART  3
 #define CLOCKEVT_OEND    4
 
+#define REBOUND_TYPE_OFFENSIVE  1
+#define REBOUND_TYPE_DEFENSIVE  2
+
+#define SHOT_TYPE_JUMP_SHOT     1
+#define SHOT_TYPE_LAYUP         2
+#define SHOT_TYPE_HOOK_SHOT     3
+#define SHOT_TYPE_DUNK          4
+#define SHOT_TYPE_TIP_IN        5
+
 #define SHOT_RESULT_MISS 1
 #define SHOT_RESULT_MAKE 2

@@ -35,6 +35,18 @@
         char *ejected;
         int shot_result;
         int clock_event;
+        int rebound_type;
+        int team_rebound;
+        char *jump_ball_player_1;
+        char *jump_ball_player_2;
+        char *jump_ball_winner;
+        int shot_type;
+        int shot_distance;
+        int free_throw_number;
+        int free_throw_total;
+        int team_turnover;
+        int team_foul;
+        int double_foul;
     } data;
 
     void init() {
@@ -56,6 +68,7 @@
 #define itoa(num) ((str_buf = malloc(strlen("99"))), sprintf(str_buf, "%d", num), str_buf)
 
 #define nonzero(i) (i ? itoa(i) : NULL_TOKEN)
+#define nonneg(i) (i ? itoa(i) : NULL_TOKEN)
 
     void display() {
         parsed_count++;
@@ -64,7 +77,10 @@
         printf("insert into %s values("
 
         // schema - most are of type string since we print NULL as string
-        "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
+        "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
+        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
+        "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
+        "%s,%d,%d,%d"
 
         // record suffix
         ");\n",
@@ -93,7 +109,19 @@
             maybe(data.violation_by),
             maybe(data.ejected),
             nonzero(data.shot_result),
-            nonzero(data.clock_event)
+            nonzero(data.clock_event),
+            nonzero(data.rebound_type),
+            data.team_rebound,
+            maybe(data.jump_ball_player_1),
+            maybe(data.jump_ball_player_2),
+            maybe(data.jump_ball_winner),
+            nonzero(data.shot_type),
+            nonneg(data.shot_distance),
+            nonzero(data.free_throw_number),
+            nonzero(data.free_throw_total),
+            data.team_turnover,
+            data.team_foul,
+            data.double_foul
         );
 #endif
         init();
@@ -156,15 +184,18 @@ clockevt:   START NUM QUARTER                               { data.clock_event =
 rebound:    rbndtype REBOUND BY rebounder
             ;
 
-rbndtype:   DEFENSIVE
-            | OFFENSIVE
+rbndtype:   DEFENSIVE                                       { data.rebound_type = REBOUND_TYPE_DEFENSIVE; }
+            | OFFENSIVE                                     { data.rebound_type = REBOUND_TYPE_OFFENSIVE; }
             ;
 
 rebounder:  player                                          { data.rebounder = $1; }
-            | TEAM
+            | TEAM                                          { data.team_rebound = 1; }
             ;
 
-jumpball:   JUMP_BALL player VS player jumpballres
+jumpball:   JUMP_BALL player VS player jumpballres           {
+                                                                data.jump_ball_player_1 = $2;
+                                                                data.jump_ball_player_2 = $4;
+                                                             }
             | JUMP_BALL VS                                   { BAD; }
             | JUMP_BALL player VS                            { BAD; }
             ;
@@ -172,7 +203,7 @@ jumpball:   JUMP_BALL player VS player jumpballres
 player:     STR
             ;
 
-jumpballres: player GAIN_POSSESSION
+jumpballres: player GAIN_POSSESSION                         { data.jump_ball_winner = $1; }
                 |
                 ;
 
@@ -188,23 +219,25 @@ shotres:    MISS                                            { data.shot_result =
             ;
 
 shot:       PTS shot_type shotloc shotextra
-            | FREE_THROW NUM OF NUM
-            | FLAGRANT_FREE_THROW
-            | FLAGRANT_FREE_THROW NUM OF NUM
-            | CLEAR_PATH_FREE_THROW NUM OF NUM
-            | TECHNICAL_FREE_THROW
+            | FREE_THROW NUM OF NUM                         { data.free_throw_number = $2; data.free_throw_total = $4; }
+            | FLAGRANT_FREE_THROW                           { data.free_throw_number = 1; data.free_throw_total = 1; }
+            | FLAGRANT_FREE_THROW NUM OF NUM                { data.free_throw_number = $2; data.free_throw_total = $4; }
+            | CLEAR_PATH_FREE_THROW NUM OF NUM              { data.free_throw_number = $2; data.free_throw_total = $4; }
+            | TECHNICAL_FREE_THROW                          { data.free_throw_number = 1; data.free_throw_total = 1; }
             ;
 
-shot_type:  JUMP_SHOT
-            | LAYUP
-            | HOOK_SHOT
-            | DUNK
-            | TIP_IN
+shot_type:  JUMP_SHOT                                       { data.shot_type = SHOT_TYPE_JUMP_SHOT; }
+            | LAYUP                                         { data.shot_type = SHOT_TYPE_LAYUP; }
+            | HOOK_SHOT                                     { data.shot_type = SHOT_TYPE_HOOK_SHOT; }
+            | DUNK                                          { data.shot_type = SHOT_TYPE_DUNK; }
+            | TIP_IN                                        { data.shot_type = SHOT_TYPE_TIP_IN; }
             ;
 
-shotloc:    FROM NUM FEET
-            | AT_RIM
-            |
+shotloc:    FROM NUM FEET                                   { data.shot_distance = $2; }
+            | AT_RIM                                        { data.shot_distance = 0; }
+            |                                               {
+                                                                data.shot_distance = -1; // unknown
+                                                            }
             ;
 
 shotextra:  block
@@ -222,7 +255,7 @@ turnover:   TURNOVER BY turnovere turnoverc
             ;
 
 turnovere:  player                                          { data.turnover_by = $1; }
-            | TEAM
+            | TEAM                                          { data.team_turnover = 1; }
             |                                               { BAD; }
             ;
 
@@ -273,12 +306,13 @@ steal:      STEAL BY player                                 { data.steal_by = $3
             ;
 
 foul:       foulname BY foulplrs
-            | foulname BY TEAM
+            | foulname BY TEAM                              { data.team_foul = 1; }
             | doublefoul BY player AND player               {
+                                                                data.double_foul = 1;
                                                                 data.double_foul_by_1 = $3,
                                                                 data.double_foul_by_2 = $5;
                                                             }
-            | doublefoul BY TEAM
+            | doublefoul BY TEAM                            { data.double_foul = 1; data.team_foul = 1; }
             ;
 
 foulname:   foultype FOUL
