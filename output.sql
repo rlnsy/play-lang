@@ -17,5 +17,6 @@ create table plays (
     sub_in text,
     violation_by text,
     ejected text,
+    shot_result integer,
     primary key (game, quarter, time)
 );

@@ -4,6 +4,8 @@
     #include <string.h>
     #include <stdlib.h>
 
+    #include "codes.h"
+
 	int yylex(void);
 	void yyerror(char *);
 	extern char *yytext;
@@ -29,6 +31,7 @@
         char *sub_in;
         char *violation_by;
         char *ejected;
+        int shot_result;
     } data;
 
     void init() {
@@ -36,6 +39,7 @@
     }
 
 #define TABLE_NAME "plays"
+#define NULL_TOKEN "NULL"
 
 #define DISPLAY
 
@@ -44,7 +48,11 @@
 #define quote(str) ((str_buf = malloc(strlen(str) + 2)), \
                         sprintf(str_buf, "\"%s\"", str), str_buf)
 
-#define maybe(str) (str ? quote(str) : "NULL")
+#define maybe(str) (str ? quote(str) : NULL_TOKEN)
+
+#define itoa(num) ((str_buf = malloc(strlen("99"))), sprintf(str_buf, "%d", num), str_buf)
+
+#define nonzero(i) (i ? itoa(i) : NULL_TOKEN)
 
     void display() {
         parsed_count++;
@@ -52,8 +60,8 @@
         // record prefix
         printf("insert into %s values("
 
-        // schema
-        "%s,%d,%f,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
+        // schema - most are of type string since we print NULL as string
+        "%s,%d,%f,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -78,7 +86,8 @@
             maybe(data.sub_out),
             maybe(data.sub_in),
             maybe(data.violation_by),
-            maybe(data.ejected)
+            maybe(data.ejected),
+            nonzero(data.shot_result)
         );
 #endif
         init();
@@ -168,8 +177,8 @@ shooter:    player                                          { data.shooter = $1;
             |                                               { BAD; }
             ;
 
-shotres:    MISS
-            | MAKE
+shotres:    MISS                                            { data.shot_result = SHOT_RESULT_MISS; }
+            | MAKE                                          { data.shot_result = SHOT_RESULT_MAKE; }
             ;
 
 shot:       PTS shot_type shotloc shotextra

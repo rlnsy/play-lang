@@ -1,0 +1,2 @@
+#define SHOT_RESULT_MISS 1
+#define SHOT_RESULT_MAKE 2
