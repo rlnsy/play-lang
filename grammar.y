@@ -34,6 +34,7 @@
         char *violation_by;
         char *ejected;
         int shot_result;
+        int clock_event;
     } data;
 
     void init() {
@@ -63,7 +64,7 @@
         printf("insert into %s values("
 
         // schema - most are of type string since we print NULL as string
-        "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
+        "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -91,7 +92,8 @@
             maybe(data.sub_in),
             maybe(data.violation_by),
             maybe(data.ejected),
-            nonzero(data.shot_result)
+            nonzero(data.shot_result),
+            nonzero(data.clock_event)
         );
 #endif
         init();
@@ -145,10 +147,10 @@ play:       clockevt                                        { data.play_type = P
             | ejection                                      { data.play_type = PLAY_TYPE_EJECTION; }
             ;
 
-clockevt:   START NUM QUARTER
-            | END NUM QUARTER
-            | START NUM OVERTIME
-            | END NUM OVERTIME
+clockevt:   START NUM QUARTER                               { data.clock_event = CLOCKEVT_QSTART; }
+            | END NUM QUARTER                               { data.clock_event = CLOCKEVT_QEND; }
+            | START NUM OVERTIME                            { data.clock_event = CLOCKEVT_OSTART; }
+            | END NUM OVERTIME                              { data.clock_event = CLOCKEVT_OEND; }
             ;
 
 rebound:    rbndtype REBOUND BY rebounder
