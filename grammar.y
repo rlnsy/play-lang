@@ -16,6 +16,7 @@
         char *game;
         int quarter;
         float time;
+        int play_type;
         char *team;
         int points_gained;
         char *rebounder;
@@ -62,7 +63,7 @@
         printf("insert into %s values("
 
         // schema - most are of type string since we print NULL as string
-        "%s,%d,%f,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
+        "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -73,6 +74,7 @@
             quote(data.game),
             data.quarter,
             data.time,
+            nonzero(data.play_type),
             maybe(data.team),
             data.points_gained,
             maybe(data.rebounder),
@@ -130,17 +132,17 @@ playdiff:   NUM                                             { data.points_gained
 game:       STR                                             { data.game = $1; }
             ;
 
-play:       clockevt
-            | rebound
-            | jumpball
-            | shotattmpt
-            | turnover
-            | foul
-            | timeout
-            | substitution
-            | violation
-            | replay
-            | ejection
+play:       clockevt                                        { data.play_type = PLAY_TYPE_CLOCKEVT; }
+            | rebound                                       { data.play_type = PLAY_TYPE_REBOUND; }
+            | jumpball                                      { data.play_type = PLAY_TYPE_JUMPBALL; }
+            | shotattmpt                                    { data.play_type = PLAY_TYPE_SHOTATT; }
+            | turnover                                      { data.play_type = PLAY_TYPE_TURNOVER; }
+            | foul                                          { data.play_type = PLAY_TYPE_FOUL; }
+            | timeout                                       { data.play_type = PLAY_TYPE_TIMEOUT; }
+            | substitution                                  { data.play_type = PLAY_TYPE_SUBST; }
+            | violation                                     { data.play_type = PLAY_TYPE_VIOLATION; }
+            | replay                                        { data.play_type = PLAY_TYPE_REPLAY; }
+            | ejection                                      { data.play_type = PLAY_TYPE_EJECTION; }
             ;
 
 clockevt:   START NUM QUARTER
