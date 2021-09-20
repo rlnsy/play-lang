@@ -48,6 +48,7 @@
         int team_foul;
         int double_foul;
         int shot_value;
+        int turnover_type;
     } data;
 
     void init() {
@@ -123,7 +124,8 @@
             data.team_turnover,
             data.team_foul,
             data.double_foul,
-            nonzero(data.shot_value)
+            nonzero(data.shot_value),
+            nonzero(data.turnover_type)
         );
 #endif
         init();
@@ -254,8 +256,8 @@ block:      BLOCK BY player                                 { data.blocked_by = 
 assist:     ASSIST BY player                                { data.assist_by = $3; }
             ;
 
-turnover:   TURNOVER BY player player_turnover
-            | TURNOVER BY TEAM team_turnover
+turnover:   TURNOVER BY player player_turnover              { data.turnover_by = $3; }
+            | TURNOVER BY TEAM team_turnover                { data.team_turnover = 1; }
             | TURNOVER BY player_turnover
             ;
 
@@ -264,11 +266,7 @@ player_turnover: pturnoverc steal
                 ;
 
 team_turnover: teamv
-                | TURNOVER
-                | bad_pass
-                | playerv
-                | foulname
-                | lost_ball
+                | pturnoverc
                 ;
 
 outofbounds: 
@@ -283,10 +281,10 @@ lost_ball:  LOST_BALL
 
 possible:   POSS
 
-pturnoverc:  bad_pass
-            | lost_ball
-            | playerv
-            | foulname
+pturnoverc:  bad_pass                                       { data.turnover_type = TURNOVER_TYPE_BAD_PASS; }
+            | lost_ball                                     { data.turnover_type = TURNOVER_TYPE_LOST_BALL; }
+            | playerv                                       { data.turnover_type = TURNOVER_TYPE_PLAYER_VIOLATION; }
+            | foulname                                      { data.turnover_type = TURNOVER_TYPE_FOUL; }
             | TURNOVER
             | NO                            { BAD; }
             ;
