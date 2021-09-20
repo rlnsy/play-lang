@@ -60,7 +60,7 @@
 #define TABLE_NAME "plays"
 #define NULL_TOKEN "NULL"
 
-//#define DISPLAY
+#define DISPLAY
 
     char *str_buf;
 
@@ -84,7 +84,7 @@
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d,%s,%d,%s"
+        "%s,%d,%d,%d,%s,%s,%d,%s"
 
         // record suffix
         ");\n",
