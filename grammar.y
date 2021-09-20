@@ -50,6 +50,7 @@
         int shot_value;
         int turnover_type;
         int team_ejected;
+        int oob_type;
     } data;
 
     void init() {
@@ -83,7 +84,7 @@
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d,%s,%d"
+        "%s,%d,%d,%d,%s,%d,%s"
 
         // record suffix
         ");\n",
@@ -127,7 +128,8 @@
             data.double_foul,
             nonzero(data.shot_value),
             nonzero(data.turnover_type),
-            data.team_ejected
+            data.team_ejected,
+            nonzero(data.oob_type)
         );
 #endif
         init();
@@ -272,8 +274,8 @@ team_turnover: teamv                                        { data.turnover_type
                 ;
 
 outofbounds: 
-            | STEP_OUT_OF_BOUNDS
-            | OUT_OF_BOUNDS lost_ball
+            | STEP_OUT_OF_BOUNDS                            { data.oob_type = OOB_TYPE_STEP_OUT_OF_BOUNDS; }
+            | OUT_OF_BOUNDS lost_ball                       { data.oob_type = OOB_TYPE_LOST_BALL; }
             | OUT_OF_BOUNDS
             ;
 

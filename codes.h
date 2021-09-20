@@ -32,3 +32,6 @@
 #define TURNOVER_TYPE_LOST_BALL         3
 #define TURNOVER_TYPE_PLAYER_VIOLATION  4
 #define TURNOVER_TYPE_FOUL              5
+
+#define OOB_TYPE_STEP_OUT_OF_BOUNDS     1
+#define OOB_TYPE_LOST_BALL              2
