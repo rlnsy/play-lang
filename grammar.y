@@ -47,6 +47,7 @@
         int team_turnover;
         int team_foul;
         int double_foul;
+        int shot_value;
     } data;
 
     void init() {
@@ -80,7 +81,7 @@
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d"
+        "%s,%d,%d,%d,%s"
 
         // record suffix
         ");\n",
@@ -121,7 +122,8 @@
             nonzero(data.free_throw_total),
             data.team_turnover,
             data.team_foul,
-            data.double_foul
+            data.double_foul,
+            nonzero(data.shot_value)
         );
 #endif
         init();
@@ -137,6 +139,7 @@
 }
 
 %type<num> NUM
+%type<num> PTS
 %type<str> STR
 %type<str> player
 %type<x> TIMESTAMP
@@ -218,7 +221,7 @@ shotres:    MISS                                            { data.shot_result =
             | MAKE                                          { data.shot_result = SHOT_RESULT_MAKE; }
             ;
 
-shot:       PTS shot_type shotloc shotextra
+shot:       PTS shot_type shotloc shotextra                 { data.shot_value = $1; }
             | FREE_THROW NUM OF NUM                         { data.free_throw_number = $2; data.free_throw_total = $4; }
             | FLAGRANT_FREE_THROW                           { data.free_throw_number = 1; data.free_throw_total = 1; }
             | FLAGRANT_FREE_THROW NUM OF NUM                { data.free_throw_number = $2; data.free_throw_total = $4; }
