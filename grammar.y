@@ -49,6 +49,7 @@
         int double_foul;
         int shot_value;
         int turnover_type;
+        int team_ejected;
     } data;
 
     void init() {
@@ -82,7 +83,7 @@
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d,%s"
+        "%s,%d,%d,%d,%s,%d"
 
         // record suffix
         ");\n",
@@ -125,7 +126,8 @@
             data.team_foul,
             data.double_foul,
             nonzero(data.shot_value),
-            nonzero(data.turnover_type)
+            nonzero(data.turnover_type),
+            data.team_ejected
         );
 #endif
         init();
@@ -429,7 +431,7 @@ replay_result: RULING_STANDS
                 ;
 
 ejection:       player EJECTED                              { data.ejected = $1; }
-                | TEAM EJECTED
+                | TEAM EJECTED                              { data.team_ejected = 1; }
                 | EJECTED                                   { BAD; }
                 ;
 
