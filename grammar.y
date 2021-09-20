@@ -57,7 +57,7 @@
 #define TABLE_NAME "plays"
 #define NULL_TOKEN "NULL"
 
-#define DISPLAY
+//#define DISPLAY
 
     char *str_buf;
 
@@ -254,56 +254,44 @@ block:      BLOCK BY player                                 { data.blocked_by = 
 assist:     ASSIST BY player                                { data.assist_by = $3; }
             ;
 
-turnover:   TURNOVER BY turnovere turnoverc
+turnover:   TURNOVER BY player player_turnover
+            | TURNOVER BY TEAM team_turnover
+            | TURNOVER BY player_turnover
             ;
 
-turnovere:  player                                          { data.turnover_by = $1; }
-            | TEAM                                          { data.team_turnover = 1; }
-            |                                               { BAD; }
-            ;
+player_turnover: pturnoverc steal
+                | pturnoverc
+                ;
 
-turnoverc:  SHOT_CLOCK
-            | BAD_PASS steal
-            | LOST_BALL steal
-            | LOST_BALL
-            | OFFENSIVE FOUL
-            | TRAVEL
-            | TRAVEL steal
-            | OFFENSIVE_GOALTEND
-            | OUT_OF_BOUNDS LOST_BALL
-            | OUT_OF_BOUNDS
-            | BAD_PASS
+team_turnover: teamv
+                | TURNOVER
+                | bad_pass
+                | playerv
+                | foulname
+                | lost_ball
+                ;
+
+outofbounds: 
             | STEP_OUT_OF_BOUNDS
-            | DISCONTINUED_DRIBBLE
-            | THREE_SECOND
-            | FIVE_SECOND
-            | EIGHT_SECOND
-            | BACK_COURT
-            | DOUBLE_DRIBBLE
-            | PALMING
-            | TURNOVER
-            | LANE_VIOLATION
-            | INBOUND
-            | ILLEGAL_ASSIST
-            | TURNOVER steal
-            | PUNCHED_BALL
-            | FIVE_SECOND INBOUND
-            | KICKED_BALL
-            | ILLEGAL_SCREEN
-            | JUMP_BALL_VIOLATION
-            | JUMP_BALL_VIOLATION steal
-            | DOUBLE PERSONAL
-            | SWINGING_ELBOWS
-            | SCORE_IN_OPP_BASKET
-            | POSS LOST_BALL
-            | POSS LOST_BALL steal
-            | NO steal
-            | EXCESSIVE_TIMEOUT
-            | OFFENSIVE FOUL steal
-            | ENTER_BASKET_FROM_BELOW
-            | OUT_OF_BOUNDS LOST_BALL steal
-            | NO                                { BAD; }
+            | OUT_OF_BOUNDS lost_ball
+            | OUT_OF_BOUNDS
             ;
+
+lost_ball:  LOST_BALL
+            | possible LOST_BALL
+            ;
+
+possible:   POSS
+
+pturnoverc:  bad_pass
+            | lost_ball
+            | playerv
+            | foulname
+            | TURNOVER
+            | NO                            { BAD; }
+            ;
+
+bad_pass:   BAD_PASS
 
 steal:      STEAL BY player                                 { data.steal_by = $3; }
             ;
@@ -321,6 +309,9 @@ foul:       foulname BY foulplrs
 foulname:   foultype FOUL
             | FLAGRANT FOUL TYPE NUM
             | DEFENSIVE_THREE_SECONDS
+            | EIGHT_SECOND
+            | THREE_SECOND
+            | DOUBLE foultype
             ;
 
 foultype:   SHOOTING
@@ -385,14 +376,46 @@ teamv:      DEFENSIVE_GOALTEND
             | JUMP_BALL
             | VIOLATION
             | DOUBLE_LANE
+            | SHOT_CLOCK
+            | EXCESSIVE_TIMEOUT
             ;
 
 playerv:    DOUBLE_LANE
-            | JUMP_BALL
-            | DEFENSIVE_GOALTEND
+            | jumpball_violation
+            | goaltend
             | KICKED_BALL
-            | LANE
+            | lane_violation
+            | DISCONTINUED_DRIBBLE
+            | TRAVEL
+            | BACK_COURT
+            | DOUBLE_DRIBBLE
+            | PALMING
+            | outofbounds
+            | inbound_violation
+            | ILLEGAL_ASSIST
+            | PUNCHED_BALL
+            | ILLEGAL_SCREEN
+            | SWINGING_ELBOWS
+            | SCORE_IN_OPP_BASKET
+            | ENTER_BASKET_FROM_BELOW
             | NO                                { BAD; }
+            ;
+
+jumpball_violation: JUMP_BALL
+                    | JUMP_BALL_VIOLATION
+                    ;
+
+inbound_violation: INBOUND
+                    | FIVE_SECOND INBOUND
+                    | FIVE_SECOND
+                    ;
+
+lane_violation: LANE
+                | LANE_VIOLATION
+                ;
+
+goaltend:   OFFENSIVE_GOALTEND
+            | DEFENSIVE_GOALTEND
             ;
 
 replay:     INSTANT_REPLAY replay_reason replay_result
