@@ -267,7 +267,7 @@ player_turnover: pturnoverc steal
                 | pturnoverc
                 ;
 
-team_turnover: teamv
+team_turnover: teamv                                        { data.turnover_type = TURNOVER_TYPE_TEAM_VIOLATION; }
                 | pturnoverc
                 ;
 
