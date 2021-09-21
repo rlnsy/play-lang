@@ -309,7 +309,8 @@ foul:       foulname BY foulplrs
             ;
 
 foulname:   foultype FOUL
-            | FLAGRANT FOUL TYPE NUM
+            | FLAGRANT_FOUL_TYPE_1
+            | FLAGRANT_FOUL_TYPE_2
             | DEFENSIVE_THREE_SECONDS
             | EIGHT_SECOND
             | THREE_SECOND
