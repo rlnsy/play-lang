@@ -54,3 +54,10 @@
 #define FOUL_TYPE_PUNCHING              16
 #define FOUL_TYPE_CLEAR_PATH            17
 #define FOUL_TYPE_TECHNICAL             19
+
+#define TECH_TYPE_TAUNTING         1
+#define TECH_TYPE_DELAY            2
+#define TECH_TYPE_NON_UNSPORT      3
+#define TECH_TYPE_HANGING          4
+#define TECH_TYPE_EXCESS_TIMEOUT   5
+#define TECH_TYPE_DEF_3_SEC        6

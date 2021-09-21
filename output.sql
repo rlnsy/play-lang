@@ -38,5 +38,6 @@ create table plays (
     team_ejected integer,
     oob_type integer,
     foul_type integer,
+    tech_type integer,
     primary key (game, quarter, time)
 );

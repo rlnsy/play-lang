@@ -52,6 +52,7 @@
         int team_ejected;
         int oob_type;
         int foul_type;
+        int tech_type;
     } data;
 
     void init() {
@@ -85,7 +86,7 @@
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d,%s,%s,%d,%s"
+        "%s,%d,%d,%d,%s,%s,%d,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -131,7 +132,8 @@
             nonzero(data.turnover_type),
             data.team_ejected,
             nonzero(data.oob_type),
-            nonzero(data.foul_type)
+            nonzero(data.foul_type),
+            nonzero(data.tech_type)
         );
 #endif
         init();
@@ -335,14 +337,14 @@ foultype:   SHOOTING                                        { data.foul_type = F
             ;
 
 techfoul:   techtype TECHNICAL
-            | DEFENSIVE_3_SECOND_TECH
+            | DEFENSIVE_3_SECOND_TECH                       { data.tech_type = TECH_TYPE_DEF_3_SEC; }
             ;
 
-techtype: TAUNTING
-           | DELAY
-           | NON_UNSPORT
-           | HANGING
-           | EXCESS_TIMEOUT
+techtype: TAUNTING                                          { data.tech_type = TECH_TYPE_TAUNTING; }
+           | DELAY                                          { data.tech_type = TECH_TYPE_DELAY; }
+           | NON_UNSPORT                                    { data.tech_type = TECH_TYPE_NON_UNSPORT; }
+           | HANGING                                        { data.tech_type = TECH_TYPE_HANGING; }
+           | EXCESS_TIMEOUT                                 { data.tech_type = TECH_TYPE_EXCESS_TIMEOUT; }
            |
            ;
 
