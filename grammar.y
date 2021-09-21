@@ -51,6 +51,7 @@
         int turnover_type;
         int team_ejected;
         int oob_type;
+        int foul_type;
     } data;
 
     void init() {
@@ -129,7 +130,8 @@
             nonzero(data.shot_value),
             nonzero(data.turnover_type),
             data.team_ejected,
-            nonzero(data.oob_type)
+            nonzero(data.oob_type),
+            nonzero(data.foul_type)
         );
 #endif
         init();
@@ -309,27 +311,30 @@ foul:       foulname BY foulplrs
             ;
 
 foulname:   foultype FOUL
-            | FLAGRANT_FOUL_TYPE_1
-            | FLAGRANT_FOUL_TYPE_2
-            | DEFENSIVE_THREE_SECONDS
-            | EIGHT_SECOND
-            | THREE_SECOND
+            | FLAGRANT_FOUL_TYPE_1                          { data.foul_type = FOUL_TYPE_FLAGRANT_1; }
+            | FLAGRANT_FOUL_TYPE_2                          { data.foul_type = FOUL_TYPE_FLAGRANT_2; }
+            | DEFENSIVE_THREE_SECONDS                       { data.foul_type = FOUL_TYPE_DEF_3_SEC; }
+            | EIGHT_SECOND                                  { data.foul_type = FOUL_TYPE_EIGHT_SEC; }
+            | THREE_SECOND                                  { data.foul_type = FOUL_TYPE_THREE_SEC; }
             | DOUBLE foultype
             ;
 
-foultype:   SHOOTING
-            | OFFENSIVE
-            | LOOSE_BALL
-            | PERSONAL
-            | PERSONAL_TAKE
-            | AWAY_FROM_PLAY
-            | PERSONAL_BLOCK
-            | OFFENSIVE_CHARGE
-            | SHOOTING_BLOCK
-            | INBOUND
-            | PUNCHING
-            | CLEAR_PATH
-            | techtype TECHNICAL
+foultype:   SHOOTING                                        { data.foul_type = FOUL_TYPE_SHOOTING; }
+            | OFFENSIVE                                     { data.foul_type = FOUL_TYPE_OFFENSIVE; }
+            | LOOSE_BALL                                    { data.foul_type = FOUL_TYPE_LOOSE_BALL; }
+            | PERSONAL                                      { data.foul_type = FOUL_TYPE_PERSONAL; }
+            | PERSONAL_TAKE                                 { data.foul_type = FOUL_TYPE_PERSONAL_TAKE; }
+            | AWAY_FROM_PLAY                                { data.foul_type = FOUL_TYPE_AWAY_FROM_PLAY; }
+            | PERSONAL_BLOCK                                { data.foul_type = FOUL_TYPE_PERSONAL_BLOCK; }
+            | OFFENSIVE_CHARGE                              { data.foul_type = FOUL_TYPE_OFFENSIVE_CHARGE; }
+            | SHOOTING_BLOCK                                { data.foul_type = FOUL_TYPE_SHOOTING_BLOCK; }
+            | INBOUND                                       { data.foul_type = FOUL_TYPE_INBOUND; }
+            | PUNCHING                                      { data.foul_type = FOUL_TYPE_PUNCHING; }
+            | CLEAR_PATH                                    { data.foul_type = FOUL_TYPE_CLEAR_PATH; }
+            | techfoul                                      { data.foul_type = FOUL_TYPE_TECHNICAL; }
+            ;
+
+techfoul:   techtype TECHNICAL
             | DEFENSIVE_3_SECOND_TECH
             ;
 

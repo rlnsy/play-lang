@@ -35,3 +35,22 @@
 
 #define OOB_TYPE_STEP_OUT_OF_BOUNDS     1
 #define OOB_TYPE_LOST_BALL              2
+
+#define FOUL_TYPE_FLAGRANT_1            1
+#define FOUL_TYPE_FLAGRANT_2            2
+#define FOUL_TYPE_DEF_3_SEC             3
+#define FOUL_TYPE_EIGHT_SEC             4
+#define FOUL_TYPE_THREE_SEC             5
+#define FOUL_TYPE_SHOOTING              6
+#define FOUL_TYPE_OFFENSIVE             7
+#define FOUL_TYPE_LOOSE_BALL            8
+#define FOUL_TYPE_PERSONAL              9
+#define FOUL_TYPE_PERSONAL_TAKE         10
+#define FOUL_TYPE_AWAY_FROM_PLAY        11
+#define FOUL_TYPE_PERSONAL_BLOCK        12
+#define FOUL_TYPE_OFFENSIVE_CHARGE      13
+#define FOUL_TYPE_SHOOTING_BLOCK        14
+#define FOUL_TYPE_INBOUND               15
+#define FOUL_TYPE_PUNCHING              16
+#define FOUL_TYPE_CLEAR_PATH            17
+#define FOUL_TYPE_TECHNICAL             19
