@@ -53,6 +53,9 @@
         int oob_type;
         int foul_type;
         int tech_type;
+        int timeout_type;
+        int team_violation;
+        int violation_type;
     } data;
 
     void init() {
@@ -86,7 +89,8 @@
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d,%s,%s,%d,%s,%s,%s"
+        "%s,%d,%d,%d,%s,%s,%d,%s,%s,%s,"
+        "%s,%d,%s"
 
         // record suffix
         ");\n",
@@ -133,7 +137,10 @@
             data.team_ejected,
             nonzero(data.oob_type),
             nonzero(data.foul_type),
-            nonzero(data.tech_type)
+            nonzero(data.tech_type),
+            nonzero(data.timeout_type),
+            data.team_violation,
+            nonzero(data.violation_type)
         );
 #endif
         init();
@@ -360,11 +367,14 @@ foulon:     player                              { data.foul_drawn_by = $1; }
 doublefoul: DOUBLE foulname
             ;
 
-timeout:    team FULL_TIMEOUT
-            | OFFICIAL_TIMEOUT
-            | team TWENTY_SECOND_TIMEOUT
+timeout:    OFFICIAL_TIMEOUT                    { data.timeout_type = TIMEOUT_TYPE_OFFICIAL; }
+            | team TWENTY_SECOND_TIMEOUT        { data.timeout_type = TIMEOUT_TYPE_20_SEC; }
             | team NO TIMEOUT
-            | FULL_TIMEOUT
+            | fulltimeout                       { data.timeout_type = TIMEOUT_TYPE_FULL; }
+            ;
+
+fulltimeout: FULL_TIMEOUT
+            | team FULL_TIMEOUT
             ;
 
 team:       STR
@@ -375,39 +385,35 @@ substitution: player SUBSTITUTE player                         { data.sub_in = $
                 | player SUBSTITUTE                            { BAD; }
                 ;
 
-violation:  VIOLATION BY TEAM teamv;
+violation:  VIOLATION BY TEAM teamv                            { data.team_violation = 1; }
             | VIOLATION BY player playerv                      { data.violation_by = $3; }
-            | VIOLATION BY playerv                      { BAD; }
+            | VIOLATION BY playerv
             ;
 
-teamv:      DEFENSIVE_GOALTEND
-            | DELAY_OF_GAME
-            | KICKED_BALL
-            | JUMP_BALL
+teamv:      DELAY_OF_GAME                                      { data.violation_type = VIOLATION_TYPE_DELAY_OF_GAME; }
+            | SHOT_CLOCK                                       { data.violation_type = VIOLATION_TYPE_SHOT_CLOCK; }
+            | EXCESSIVE_TIMEOUT                                { data.violation_type = VIOLATION_TYPE_EXCESS_TIMEOUT; }
             | VIOLATION
-            | DOUBLE_LANE
-            | SHOT_CLOCK
-            | EXCESSIVE_TIMEOUT
+            | playerv
             ;
 
-playerv:    DOUBLE_LANE
-            | jumpball_violation
-            | goaltend
-            | KICKED_BALL
-            | lane_violation
-            | DISCONTINUED_DRIBBLE
-            | TRAVEL
-            | BACK_COURT
-            | DOUBLE_DRIBBLE
-            | PALMING
-            | outofbounds
-            | inbound_violation
-            | ILLEGAL_ASSIST
-            | PUNCHED_BALL
-            | ILLEGAL_SCREEN
-            | SWINGING_ELBOWS
-            | SCORE_IN_OPP_BASKET
-            | ENTER_BASKET_FROM_BELOW
+playerv:    jumpball_violation                                 { data.violation_type = VIOLATION_TYPE_JUMP_BALL; }
+            | goaltend                                         { data.violation_type = VIOLATION_TYPE_GOALTEND; }
+            | KICKED_BALL                                      { data.violation_type = VIOLATION_TYPE_KICKED_BALL; }
+            | lane_violation                                   { data.violation_type = VIOLATION_TYPE_LANE; }
+            | DISCONTINUED_DRIBBLE                             { data.violation_type = VIOLATION_TYPE_DISC_DRIBBLE; }
+            | TRAVEL                                           { data.violation_type = VIOLATION_TYPE_TRAVEL; }
+            | BACK_COURT                                       { data.violation_type = VIOLATION_TYPE_BACK_COURT; }
+            | DOUBLE_DRIBBLE                                   { data.violation_type = VIOLATION_TYPE_DOUBLE_DRIBBLE; }
+            | PALMING                                          { data.violation_type = VIOLATION_TYPE_PALMING; }
+            | outofbounds                                      { data.violation_type = VIOLATION_TYPE_OOB; }
+            | inbound_violation                                { data.violation_type = VIOLATION_TYPE_INBOUND; }
+            | ILLEGAL_ASSIST                                   { data.violation_type = VIOLATION_TYPE_ILLEGAL_ASSIST; }
+            | PUNCHED_BALL                                     { data.violation_type = VIOLATION_TYPE_PUNCHED_BALL; }
+            | ILLEGAL_SCREEN                                   { data.violation_type = VIOLATION_TYPE_ILLEGAL_SCREEN; }
+            | SWINGING_ELBOWS                                  { data.violation_type = VIOLATION_TYPE_SWINGIN_ELBOWS; }
+            | SCORE_IN_OPP_BASKET                              { data.violation_type = VIOLATION_TYPE_SCORE_OPP_BSKT; }
+            | ENTER_BASKET_FROM_BELOW                          { data.violation_type = VIOLATION_TYPE_ENTR_BSKT_BELOW; }
             | NO                                { BAD; }
             ;
 
@@ -422,6 +428,7 @@ inbound_violation: INBOUND
 
 lane_violation: LANE
                 | LANE_VIOLATION
+                | DOUBLE_LANE
                 ;
 
 goaltend:   OFFENSIVE_GOALTEND
