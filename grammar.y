@@ -6,6 +6,12 @@
 
     #include "codes.h"
 
+    typedef unsigned char byte;
+    typedef byte tinyuint;
+    typedef char * text;
+    typedef byte boolean;
+    typedef float real;
+
 	int yylex(void);
 	void yyerror(char *);
 	extern char *yytext;
@@ -13,51 +19,51 @@
     int parsed_count = 0;
 
     struct {
-        char *game;
-        int quarter;
-        float time;
-        int play_type;
-        char *team;
-        int points_gained;
-        char *rebounder;
-        char *shooter;
-        char *blocked_by;
-        char *assist_by;
-        char *turnover_by;
-        char *steal_by;
-        char *double_foul_by_1;
-        char *double_foul_by_2;
-        char *foul_by;
-        char *foul_drawn_by;
-        char *sub_out;
-        char *sub_in;
-        char *violation_by;
-        char *ejected;
-        int shot_result;
-        int clock_event;
-        int rebound_type;
-        int team_rebound;
-        char *jump_ball_player_1;
-        char *jump_ball_player_2;
-        char *jump_ball_winner;
-        int shot_type;
-        int shot_distance;
-        int free_throw_number;
-        int free_throw_total;
-        int team_turnover;
-        int team_foul;
-        int double_foul;
-        int shot_value;
-        int turnover_type;
-        int team_ejected;
-        int oob_type;
-        int foul_type;
-        int tech_type;
-        int timeout_type;
-        int team_violation;
-        int violation_type;
-        int replay_type;
-        int replay_result;
+        text game;
+        tinyuint quarter;
+        real time;
+        tinyuint play_type;
+        text team;
+        tinyuint points_gained;
+        text rebounder;
+        text shooter;
+        text blocked_by;
+        text assist_by;
+        text turnover_by;
+        text steal_by;
+        text double_foul_by_1;
+        text double_foul_by_2;
+        text foul_by;
+        text foul_drawn_by;
+        text sub_out;
+        text sub_in;
+        text violation_by;
+        text ejected;
+        tinyuint shot_result;
+        tinyuint clock_event;
+        tinyuint rebound_type;
+        boolean team_rebound;
+        text jump_ball_player_1;
+        text jump_ball_player_2;
+        text jump_ball_winner;
+        tinyuint shot_type;
+        tinyuint shot_distance;
+        tinyuint free_throw_number;
+        tinyuint free_throw_total;
+        boolean team_turnover;
+        boolean team_foul;
+        boolean double_foul;
+        tinyuint shot_value;
+        tinyuint turnover_type;
+        boolean team_ejected;
+        tinyuint oob_type;
+        tinyuint foul_type;
+        tinyuint tech_type;
+        tinyuint timeout_type;
+        boolean team_violation;
+        tinyuint violation_type;
+        tinyuint replay_type;
+        tinyuint replay_result;
     } data;
 
     void init() {
@@ -76,10 +82,14 @@
 
 #define maybe(str) (str ? quote(str) : NULL_TOKEN)
 
-#define itoa(num) ((str_buf = malloc(strlen("99"))), sprintf(str_buf, "%d", num), str_buf)
+#define MAX_BYTE_STRLEN (strlen("255"))
+
+#define itoa(num) ((str_buf = malloc(MAX_BYTE_STRLEN)), sprintf(str_buf, "%d", num), str_buf)
 
 #define nonzero(i) (i ? itoa(i) : NULL_TOKEN)
 #define nonneg(i) (i ? itoa(i) : NULL_TOKEN)
+
+#define itob(x) (x ? "TRUE" : "FALSE")
 
     void display() {
         parsed_count++;
@@ -90,9 +100,9 @@
         // schema - most are of type string since we print NULL as string
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
-        "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
-        "%s,%d,%d,%d,%s,%s,%d,%s,%s,%s,"
-        "%s,%d,%s,%s,%s"
+        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
+        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
+        "%s,%s,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -124,7 +134,7 @@
             nonzero(data.shot_result),
             nonzero(data.clock_event),
             nonzero(data.rebound_type),
-            data.team_rebound,
+            itob(data.team_rebound),
             maybe(data.jump_ball_player_1),
             maybe(data.jump_ball_player_2),
             maybe(data.jump_ball_winner),
@@ -132,17 +142,17 @@
             nonneg(data.shot_distance),
             nonzero(data.free_throw_number),
             nonzero(data.free_throw_total),
-            data.team_turnover,
-            data.team_foul,
-            data.double_foul,
+            itob(data.team_turnover),
+            itob(data.team_foul),
+            itob(data.double_foul),
             nonzero(data.shot_value),
             nonzero(data.turnover_type),
-            data.team_ejected,
+            itob(data.team_ejected),
             nonzero(data.oob_type),
             nonzero(data.foul_type),
             nonzero(data.tech_type),
             nonzero(data.timeout_type),
-            data.team_violation,
+            itob(data.team_violation),
             nonzero(data.violation_type),
             nonzero(data.replay_type),
             nonzero(data.replay_result)
@@ -156,7 +166,7 @@
 
 %union {
     char *str;
-    int num;
+    unsigned char num;
     float x;
 }
 
