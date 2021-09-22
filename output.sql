@@ -42,5 +42,7 @@ create table plays (
     timeout_type integer,
     team_violation integer,
     violation_type integer,
+    replay_type integer,
+    replay_result integer,
     primary key (game, quarter, time)
 );

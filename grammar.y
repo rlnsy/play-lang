@@ -56,6 +56,8 @@
         int timeout_type;
         int team_violation;
         int violation_type;
+        int replay_type;
+        int replay_result;
     } data;
 
     void init() {
@@ -90,7 +92,7 @@
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,"
         "%s,%d,%d,%d,%s,%s,%d,%s,%s,%s,"
-        "%s,%d,%s"
+        "%s,%d,%s,%s,%s"
 
         // record suffix
         ");\n",
@@ -140,7 +142,9 @@
             nonzero(data.tech_type),
             nonzero(data.timeout_type),
             data.team_violation,
-            nonzero(data.violation_type)
+            nonzero(data.violation_type),
+            nonzero(data.replay_type),
+            nonzero(data.replay_result)
         );
 #endif
         init();
@@ -439,11 +443,11 @@ replay:     INSTANT_REPLAY replay_reason replay_result
             | INSTANT_REPLAY
             ;
 
-replay_reason: CHALLENGE
-                | REQUEST
+replay_reason: CHALLENGE                                    { data.replay_type = REPLAY_TYPE_CHALLENGE; }
+                | REQUEST                                   { data.replay_type = REPLAY_TYPE_REQUEST; }
                 ;
 
-replay_result: RULING_STANDS
+replay_result: RULING_STANDS                                { data.replay_result = REPLAY_RESULT_RULING_STANDS; }
                 |
                 ;
 
