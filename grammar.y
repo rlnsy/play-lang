@@ -85,7 +85,7 @@
         parsed_count++;
 #ifdef DISPLAY
         // record prefix
-        printf("insert into %s values("
+        printf("insert into %s values(%d,"
 
         // schema - most are of type string since we print NULL as string
         "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
@@ -98,6 +98,7 @@
         ");\n",
 
         TABLE_NAME,
+        parsed_count,
 
         // data
             quote(data.game),

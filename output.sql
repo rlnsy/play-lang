@@ -1,4 +1,5 @@
 create table plays (
+    id integer primary key,
     game text,
     quarter integer,
     time real,
@@ -43,6 +44,5 @@ create table plays (
     team_violation integer,
     violation_type integer,
     replay_type integer,
-    replay_result integer,
-    primary key (game, quarter, time)
+    replay_result integer
 );
