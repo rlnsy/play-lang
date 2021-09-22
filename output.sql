@@ -1,6 +1,6 @@
 create table plays (
-    id integer primary key,
-    game text,
+    game varchar(100) not null,
+    play_num integer not null,
     quarter tinyint unsigned,
     time real,
     play_type tinyint unsigned,
@@ -44,5 +44,6 @@ create table plays (
     team_violation boolean,
     violation_type tinyint unsigned,
     replay_type tinyint unsigned,
-    replay_result tinyint unsigned
+    replay_result tinyint unsigned,
+    primary key (game, play_num)
 );

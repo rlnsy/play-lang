@@ -17,6 +17,8 @@
 	extern char *yytext;
 
     int parsed_count = 0;
+    int game_count = 0;
+    char *last_game = NULL;
 
     struct {
         text game;
@@ -93,12 +95,13 @@
 
     void display() {
         parsed_count++;
+        game_count++;
 #ifdef DISPLAY
         // record prefix
-        printf("insert into %s values(%d,"
+        printf("insert into %s values("
 
         // schema - most are of type string since we print NULL as string
-        "%s,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
+        "%s,%d,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
@@ -108,10 +111,10 @@
         ");\n",
 
         TABLE_NAME,
-        parsed_count,
 
         // data
             quote(data.game),
+            game_count,
             data.quarter,
             data.time,
             nonzero(data.play_type),
@@ -194,7 +197,13 @@ playteam:   STR                                             { data.team = $1; }
 
 playdiff:   NUM                                             { data.points_gained = $1; }
 
-game:       STR                                             { data.game = $1; }
+game:       STR                                             {
+                                                                data.game = $1;
+                                                                if (!last_game || strcmp(last_game, data.game)) {
+                                                                    game_count = 0;
+                                                                    last_game = data.game;
+                                                                }
+                                                            }
             ;
 
 play:       clockevt                                        { data.play_type = PLAY_TYPE_CLOCKEVT; }
