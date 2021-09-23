@@ -17,15 +17,19 @@
 	extern char *yytext;
 
     int parsed_count = 0;
-    int game_count = 0;
-    char *last_game = NULL;
 
     struct {
-        text game;
+        int game_year;
+        tinyuint game_month;
+        tinyuint game_day;
+        text game_home;
+        tinyuint game_num;
+        int play_num;
         tinyuint quarter;
         real time;
         tinyuint play_type;
-        text team;
+        text team_name;
+        int team_year;
         tinyuint points_gained;
         text rebounder;
         text shooter;
@@ -95,13 +99,12 @@
 
     void display() {
         parsed_count++;
-        game_count++;
 #ifdef DISPLAY
         // record prefix
         printf("insert into %s values("
 
         // schema - most are of type string since we print NULL as string
-        "%s,%d,%d,%f,%s,%s,%d,%s,%s,%s,%s,"
+        "%d,%d,%d,%s,%d,%d,%d,%f,%s,%s,%s,%d,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
@@ -113,12 +116,17 @@
         TABLE_NAME,
 
         // data
-            quote(data.game),
-            game_count,
+            data.game_year,
+            data.game_month,
+            data.game_day,
+            quote(data.game_home),
+            data.game_num,
+            data.play_num,
             data.quarter,
             data.time,
             nonzero(data.play_type),
-            maybe(data.team),
+            maybe(data.team_name),
+            nonzero(data.team_year),
             data.points_gained,
             maybe(data.rebounder),
             maybe(data.shooter),
@@ -169,7 +177,7 @@
 
 %union {
     char *str;
-    unsigned char num;
+    int num;
     float x;
 }
 
@@ -185,26 +193,34 @@ plays:	    plays playl
             |
             ;
 
-playl:      game SEP playqtr SEP playtime SEP playteam SEP playdiff SEP play '\n' { display();}
+playl:      game SEP play_num SEP playqtr SEP playtime SEP playteam SEP playdiff SEP play '\n' { display();}
 
 playqtr:    NUM                                             { data.quarter = $1; }
 
 playtime:   TIMESTAMP                                       { data.time = $1; }
 
-playteam:   STR                                             { data.team = $1; }
+playteam: playteam_name SEP playteam_year
+
+playteam_name:   STR                                        { data.team_name = $1; }
+            | NONE
+            ;
+
+playteam_year: NUM                                          { data.team_year = $1; }
             | NONE
             ;
 
 playdiff:   NUM                                             { data.points_gained = $1; }
 
-game:       STR                                             {
-                                                                data.game = $1;
-                                                                if (!last_game || strcmp(last_game, data.game)) {
-                                                                    game_count = 0;
-                                                                    last_game = data.game;
-                                                                }
+game:       NUM SEP NUM SEP NUM SEP NUM SEP STR             {
+                                                                data.game_year = $1;
+                                                                data.game_month = $3;
+                                                                data.game_day = $5;
+                                                                data.game_num = $7;
+                                                                data.game_home = $9;
                                                             }
             ;
+
+play_num:   NUM                                             { data.play_num = $1; }
 
 play:       clockevt                                        { data.play_type = PLAY_TYPE_CLOCKEVT; }
             | rebound                                       { data.play_type = PLAY_TYPE_REBOUND; }

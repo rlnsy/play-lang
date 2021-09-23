@@ -1,10 +1,15 @@
 create table plays (
-    game varchar(100) not null,
+    game_year integer not null,
+    game_month tinyint unsigned not null,
+    game_day tinyint unsigned not null,
+    game_home varchar(3),
+    game_num tinyint unsigned not null,
     play_num integer not null,
     quarter tinyint unsigned,
     time real,
     play_type tinyint unsigned,
-    team text,
+    team_name varchar(3),
+    team_year integer,
     points_gained tinyint unsigned,
     rebounder text,
     shooter text,
@@ -45,5 +50,5 @@ create table plays (
     violation_type tinyint unsigned,
     replay_type tinyint unsigned,
     replay_result tinyint unsigned,
-    primary key (game, play_num)
+    primary key (game_year,game_month,game_day,game_home,game_num,play_num)
 );
