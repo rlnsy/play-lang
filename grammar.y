@@ -76,7 +76,6 @@
         memset(&data, 0, sizeof(data));
     }
 
-#define TABLE_NAME "plays"
 #define NULL_TOKEN "NULL"
 
 #define DISPLAY
@@ -100,8 +99,7 @@
     void display() {
         parsed_count++;
 #ifdef DISPLAY
-        // record prefix
-        printf("insert into %s values("
+        printf(
 
         // schema - most are of type string since we print NULL as string
         "%d,%d,%d,%s,%d,%d,%d,%f,%s,%s,%s,%d,%s,%s,%s,%s,"
@@ -110,10 +108,7 @@
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s"
 
-        // record suffix
-        ");\n",
-
-        TABLE_NAME,
+        "\n",
 
         // data
             data.game_year,
