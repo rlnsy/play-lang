@@ -26,6 +26,7 @@
 %token JUMP_SHOT
 %token LAYUP
 %token HOOK_SHOT
+%token SHOT
 %token DUNK
 %token TIP_IN
 %token SHOOTING
@@ -96,3 +97,6 @@
 %token SEP
 %token NONE
 %token TIMESTAMP
+%token SLASH
+%token PLAYER COACH
+%token UNKNOWN

@@ -60,6 +60,7 @@ gains\ possession               return GAIN_POSSESSION;
 misses                          return MISS;
 makes                           return MAKE;
 jump\ shot                      return JUMP_SHOT;
+shot                            return SHOT;
 from                            return FROM;
 ft                              return FEET;
 block                           return BLOCK;
@@ -148,10 +149,14 @@ timeout                         return TIMEOUT;
 excessive\ timeout              return EXCESSIVE_TIMEOUT;
 enter\ basket\ from\ below      return ENTER_BASKET_FROM_BELOW;
 NA                              return NONE;
+\/                              return SLASH;
+player                          return PLAYER;
+coach                           return COACH;
+unknown                         return UNKNOWN;
 
 
     /* This is an arbitrary length string of allowed characters */
-[^:; \(\)\t\n\|]+       {
+[^:; \(\)\t\n\|\/]+     {
                             yylval.str = strdup(yytext);
                             return STR;
                         }

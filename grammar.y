@@ -41,10 +41,12 @@
         text double_foul_by_2;
         text foul_by;
         text foul_drawn_by;
+        text foul_by_coach;
         text sub_out;
         text sub_in;
         text violation_by;
         text ejected;
+        text coach_ejected;
         tinyuint shot_result;
         tinyuint clock_event;
         tinyuint rebound_type;
@@ -103,7 +105,7 @@
 
         // schema - most are of type string since we print NULL as string
         "%d,%d,%d,%s,%d,%d,%d,%f,%s,%s,%s,%d,%s,%s,%s,%s,"
-        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
+        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
         "%s,%s,%s,%s,%s"
@@ -133,10 +135,12 @@
             maybe(data.double_foul_by_2),
             maybe(data.foul_by),
             maybe(data.foul_drawn_by),
+            maybe(data.foul_by_coach),
             maybe(data.sub_out),
             maybe(data.sub_in),
             maybe(data.violation_by),
             maybe(data.ejected),
+            maybe(data.coach_ejected),
             nonzero(data.shot_result),
             nonzero(data.clock_event),
             nonzero(data.rebound_type),
@@ -180,6 +184,7 @@
 %type<num> PTS
 %type<str> STR
 %type<str> player
+%type<str> coach
 %type<x> TIMESTAMP
 
 %%
@@ -255,10 +260,12 @@ jumpball:   JUMP_BALL player VS player jumpballres           {
             | JUMP_BALL player VS                            { BAD; }
             ;
 
-player:     STR
-            ;
+player:     PLAYER STR                                      { $$ = $2; }
+
+coach:      COACH STR                                       { $$ = $2; }
 
 jumpballres: player GAIN_POSSESSION                         { data.jump_ball_winner = $1; }
+                | UNKNOWN GAIN_POSSESSION                   { BAD; }
                 |
                 ;
 
@@ -286,6 +293,7 @@ shot_type:  JUMP_SHOT                                       { data.shot_type = S
             | HOOK_SHOT                                     { data.shot_type = SHOT_TYPE_HOOK_SHOT; }
             | DUNK                                          { data.shot_type = SHOT_TYPE_DUNK; }
             | TIP_IN                                        { data.shot_type = SHOT_TYPE_TIP_IN; }
+            | SHOT
             ;
 
 shotloc:    FROM NUM FEET                                   { data.shot_distance = $2; }
@@ -352,6 +360,7 @@ foul:       foulname BY foulplrs
                                                                 data.double_foul_by_2 = $5;
                                                             }
             | doublefoul BY TEAM                            { data.double_foul = 1; data.team_foul = 1; }
+            | foulname BY coach                        { data.foul_type = FOUL_TYPE_TECHNICAL; data.foul_by_coach = $3; }
             ;
 
 foulname:   foultype FOUL
@@ -398,6 +407,8 @@ foulplrs:   foulby
 foulby:     player                              { data.foul_by = $1; }
 
 foulon:     player                              { data.foul_drawn_by = $1; }
+            | UNKNOWN
+            ;
 
 doublefoul: DOUBLE foulname
             ;
@@ -410,6 +421,7 @@ timeout:    OFFICIAL_TIMEOUT                    { data.timeout_type = TIMEOUT_TY
 
 fulltimeout: FULL_TIMEOUT
             | team FULL_TIMEOUT
+            | team SLASH team FULL_TIMEOUT
             ;
 
 team:       STR
@@ -483,6 +495,7 @@ replay_result: RULING_STANDS                                { data.replay_result
                 ;
 
 ejection:       player EJECTED                              { data.ejected = $1; }
+                | coach EJECTED                             { data.coach_ejected = $1; }
                 | TEAM EJECTED                              { data.team_ejected = 1; }
                 | EJECTED                                   { BAD; }
                 ;
