@@ -21,12 +21,12 @@ create table plays (
     double_foul_by_2 varchar(20) null,
     foul_by varchar(20) null,
     foul_drawn_by varchar(20) null,
-    foul_by_coach text,
+    foul_by_coach varchar(20) null,
     sub_out varchar(20) null,
     sub_in varchar(20) null,
     violation_by varchar(20) null,
     ejected varchar(20) null,
-    coach_ejected text,
+    coach_ejected varchar(20) null,
     shot_result tinyint unsigned,
     clock_event tinyint unsigned,
     rebound_type tinyint unsigned,
@@ -69,5 +69,7 @@ create table plays (
     foreign key (ejected) references players(id),
     foreign key (jump_ball_player_1) references players(id),
     foreign key (jump_ball_player_2) references players(id),
-    foreign key (jump_ball_winner) references players(id)
+    foreign key (jump_ball_winner) references players(id),
+    foreign key (foul_by_coach) references coaches(id),
+    foreign key (coach_ejected) references coaches(id)
 );
