@@ -8,8 +8,8 @@ create table plays (
     quarter tinyint unsigned,
     time real,
     play_type tinyint unsigned,
-    team_name varchar(3),
-    team_year integer,
+    team_name varchar(3) null,
+    team_year integer null,
     points_gained tinyint unsigned,
     rebounder varchar(20) null,
     shooter varchar(20) null,
@@ -72,5 +72,6 @@ create table plays (
     foreign key (jump_ball_winner) references players(id),
     foreign key (foul_by_coach) references coaches(id),
     foreign key (coach_ejected) references coaches(id),
-    foreign key (game_year, game_month, game_day, game_home, game_num) references games(game_year, game_month, game_day, game_home, game_num)
+    foreign key (game_year, game_month, game_day, game_home, game_num) references games(game_year, game_month, game_day, game_home, game_num),
+    foreign key (team_name,team_year) references teams(franchise,team_year)
 );
