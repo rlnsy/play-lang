@@ -138,18 +138,27 @@
             shot_count++;
             data.shot_num = shot_count;
             printf("SHOT ");
-            print_values(6,
+            print_values(15,
             "%d", data.game_year,
             "%d", data.game_month,
             "%d", data.game_day,
             "%s", quote(data.game_home),
             "%d", data.game_num,
-            "%d", data.shot_num
+            "%d", data.shot_num,
+            "%s", maybe(data.shooter),
+            "%s", maybe(data.blocked_by),
+            "%s", maybe(data.assist_by),
+            "%s", nonzero(data.shot_result),
+            "%s", nonzero(data.shot_type),
+            "%s", nonneg(data.shot_distance),
+            "%s", nonzero(data.shot_value),
+            "%s", NULL_TOKEN,
+            "%s", NULL_TOKEN
             );
         }
 
         printf("PLAY ");
-        print_values(54,
+        print_values(47,
             "%d", data.game_year,
             "%d", data.game_month,
             "%d", data.game_day,
@@ -163,9 +172,6 @@
             "%s", nonzero(data.team_year),
             "%d", data.points_gained,
             "%s", maybe(data.rebounder),
-            "%s", maybe(data.shooter),
-            "%s", maybe(data.blocked_by),
-            "%s", maybe(data.assist_by),
             "%s", maybe(data.turnover_by),
             "%s", maybe(data.steal_by),
             "%s", maybe(data.double_foul_by_1),
@@ -178,21 +184,17 @@
             "%s", maybe(data.violation_by),
             "%s", maybe(data.ejected),
             "%s", maybe(data.coach_ejected),
-            "%s", nonzero(data.shot_result),
             "%s", nonzero(data.clock_event),
             "%s", nonzero(data.rebound_type),
             "%s", itob(data.team_rebound),
             "%s", maybe(data.jump_ball_player_1),
             "%s", maybe(data.jump_ball_player_2),
             "%s", maybe(data.jump_ball_winner),
-            "%s", nonzero(data.shot_type),
-            "%s", nonneg(data.shot_distance),
             "%s", nonzero(data.free_throw_number),
             "%s", nonzero(data.free_throw_total),
             "%s", itob(data.team_turnover),
             "%s", itob(data.team_foul),
             "%s", itob(data.double_foul),
-            "%s", nonzero(data.shot_value),
             "%s", nonzero(data.turnover_type),
             "%s", itob(data.team_ejected),
             "%s", nonzero(data.oob_type),
