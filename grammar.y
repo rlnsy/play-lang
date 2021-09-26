@@ -226,6 +226,7 @@ play:       clockevt                                        { data.play_type = P
             | rebound                                       { data.play_type = PLAY_TYPE_REBOUND; }
             | jumpball                                      { data.play_type = PLAY_TYPE_JUMPBALL; }
             | shotattmpt                                    { data.play_type = PLAY_TYPE_SHOTATT; }
+            | free_throw                                    { data.play_type = PLAY_TYPE_FREE_THR; }
             | turnover                                      { data.play_type = PLAY_TYPE_TURNOVER; }
             | foul                                          { data.play_type = PLAY_TYPE_FOUL; }
             | timeout                                       { data.play_type = PLAY_TYPE_TIMEOUT; }
@@ -281,7 +282,10 @@ shotres:    MISS                                            { data.shot_result =
             ;
 
 shot:       PTS shot_type shotloc shotextra                 { data.shot_value = $1; }
-            | FREE_THROW NUM OF NUM                         { data.free_throw_number = $2; data.free_throw_total = $4; }
+
+free_throw: shooter shotres free_throw_type
+
+free_throw_type: FREE_THROW NUM OF NUM                         { data.free_throw_number = $2; data.free_throw_total = $4; }
             | FLAGRANT_FREE_THROW                           { data.free_throw_number = 1; data.free_throw_total = 1; }
             | FLAGRANT_FREE_THROW NUM OF NUM                { data.free_throw_number = $2; data.free_throw_total = $4; }
             | CLEAR_PATH_FREE_THROW NUM OF NUM              { data.free_throw_number = $2; data.free_throw_total = $4; }

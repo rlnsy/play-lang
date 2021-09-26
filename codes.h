@@ -9,6 +9,7 @@
 #define PLAY_TYPE_REPLAY    9
 #define PLAY_TYPE_EJECTION  10
 #define PLAY_TYPE_SHOTATT   11
+#define PLAY_TYPE_FREE_THR  12
 
 #define CLOCKEVT_QSTART  1
 #define CLOCKEVT_QEND    2
