@@ -1,3 +1,14 @@
+create table shots (
+    game_year integer not null,
+    game_month tinyint unsigned not null,
+    game_day tinyint unsigned not null,
+    game_home varchar(3) not null,
+    game_num tinyint unsigned not null,
+    shot_num integer not null,
+    primary key (game_year, game_month, game_day, game_home, game_num, shot_num),
+    foreign key (game_year, game_month, game_day, game_home, game_num) references games(game_year, game_month, game_day, game_home, game_num)
+);
+
 create table plays (
     game_year integer not null,
     game_month tinyint unsigned not null,
@@ -52,6 +63,7 @@ create table plays (
     violation_type tinyint unsigned,
     replay_type tinyint unsigned,
     replay_result tinyint unsigned,
+    shot_num integer null,
     primary key (game_year,game_month,game_day,game_home,game_num,play_num),
     foreign key (rebounder) references players(id),
     foreign key (shooter) references players(id),
@@ -73,5 +85,6 @@ create table plays (
     foreign key (foul_by_coach) references coaches(id),
     foreign key (coach_ejected) references coaches(id),
     foreign key (game_year, game_month, game_day, game_home, game_num) references games(game_year, game_month, game_day, game_home, game_num),
-    foreign key (team_name,team_year) references teams(franchise,team_year)
+    foreign key (team_name,team_year) references teams(franchise,team_year),
+    foreign key (game_year, game_month, game_day, game_home, game_num, shot_num) references shots(game_year, game_month, game_day, game_home, game_num, shot_num)
 );

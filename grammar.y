@@ -18,6 +18,7 @@
 	extern char *yytext;
 
     int parsed_count = 0;
+    int shot_count;
 
     struct {
         int game_year;
@@ -31,6 +32,7 @@
         tinyuint play_type;
         text team_name;
         int team_year;
+        int shot_num;
         tinyuint points_gained;
         text rebounder;
         text shooter;
@@ -81,8 +83,6 @@
 
 #define NULL_TOKEN "NULL"
 
-#define DISPLAY
-
     char *str_buf;
 
 #define quote(str) ((str_buf = malloc(strlen(str) + 2)), \
@@ -128,8 +128,28 @@
 
     void display() {
         parsed_count++;
-#ifdef DISPLAY
-        print_values(53,
+
+        if (data.quarter == 1 && data.time == 720 && data.play_type == PLAY_TYPE_JUMPBALL) {
+            // this is the first play in a game
+            shot_count = 0;
+        }
+
+        if (data.play_type == PLAY_TYPE_SHOTATT) {
+            shot_count++;
+            data.shot_num = shot_count;
+            printf("SHOT ");
+            print_values(6,
+            "%d", data.game_year,
+            "%d", data.game_month,
+            "%d", data.game_day,
+            "%s", quote(data.game_home),
+            "%d", data.game_num,
+            "%d", data.shot_num
+            );
+        }
+
+        printf("PLAY ");
+        print_values(54,
             "%d", data.game_year,
             "%d", data.game_month,
             "%d", data.game_day,
@@ -182,9 +202,9 @@
             "%s", itob(data.team_violation),
             "%s", nonzero(data.violation_type),
             "%s", nonzero(data.replay_type),
-            "%s", nonzero(data.replay_result)
+            "%s", nonzero(data.replay_result),
+            "%s", nonzero(data.shot_num)
         );
-#endif
         init();
     }
 
