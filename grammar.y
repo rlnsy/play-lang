@@ -3,6 +3,7 @@
 	#include <stdio.h>
     #include <string.h>
     #include <stdlib.h>
+    #include <stdarg.h>
 
     #include "codes.h"
 
@@ -98,74 +99,90 @@
 
 #define itob(x) (x ? "TRUE" : "FALSE")
 
+    void print_values(int count, ...) {
+        count *= 2;
+        va_list ap;
+        va_start(ap, count);
+        char *f;
+        union {
+            int i;
+            double r;
+            char *s;
+        } v;
+        for (int i = 0; i < count; i+=2) {
+            f = va_arg(ap, char *);
+            if (!strcmp(f, "%d")) {
+                v.i = va_arg(ap, int);
+                printf("%d", v.i);
+            } else if (!strcmp(f, "%f")) {
+                v.r = va_arg(ap, double);
+                printf("%f", v.r);
+            } else if (!strcmp(f, "%s")) {
+                v.s = va_arg(ap, char *);
+                printf("%s", v.s);
+            }
+            printf(i < count - 2 ? "," : "\n");
+        }
+        va_end(ap);
+    }
+
     void display() {
         parsed_count++;
 #ifdef DISPLAY
-        printf(
-
-        // schema - most are of type string since we print NULL as string
-        "%d,%d,%d,%s,%d,%d,%d,%f,%s,%s,%s,%d,%s,%s,%s,%s,"
-        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
-        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
-        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
-        "%s,%s,%s,%s,%s"
-
-        "\n",
-
-        // data
-            data.game_year,
-            data.game_month,
-            data.game_day,
-            quote(data.game_home),
-            data.game_num,
-            data.play_num,
-            data.quarter,
-            data.time,
-            nonzero(data.play_type),
-            maybe(data.team_name),
-            nonzero(data.team_year),
-            data.points_gained,
-            maybe(data.rebounder),
-            maybe(data.shooter),
-            maybe(data.blocked_by),
-            maybe(data.assist_by),
-            maybe(data.turnover_by),
-            maybe(data.steal_by),
-            maybe(data.double_foul_by_1),
-            maybe(data.double_foul_by_2),
-            maybe(data.foul_by),
-            maybe(data.foul_drawn_by),
-            maybe(data.foul_by_coach),
-            maybe(data.sub_out),
-            maybe(data.sub_in),
-            maybe(data.violation_by),
-            maybe(data.ejected),
-            maybe(data.coach_ejected),
-            nonzero(data.shot_result),
-            nonzero(data.clock_event),
-            nonzero(data.rebound_type),
-            itob(data.team_rebound),
-            maybe(data.jump_ball_player_1),
-            maybe(data.jump_ball_player_2),
-            maybe(data.jump_ball_winner),
-            nonzero(data.shot_type),
-            nonneg(data.shot_distance),
-            nonzero(data.free_throw_number),
-            nonzero(data.free_throw_total),
-            itob(data.team_turnover),
-            itob(data.team_foul),
-            itob(data.double_foul),
-            nonzero(data.shot_value),
-            nonzero(data.turnover_type),
-            itob(data.team_ejected),
-            nonzero(data.oob_type),
-            nonzero(data.foul_type),
-            nonzero(data.tech_type),
-            nonzero(data.timeout_type),
-            itob(data.team_violation),
-            nonzero(data.violation_type),
-            nonzero(data.replay_type),
-            nonzero(data.replay_result)
+        print_values(53,
+            "%d", data.game_year,
+            "%d", data.game_month,
+            "%d", data.game_day,
+            "%s", quote(data.game_home),
+            "%d", data.game_num,
+            "%d", data.play_num,
+            "%d", data.quarter,
+            "%f", data.time,
+            "%s", nonzero(data.play_type),
+            "%s", maybe(data.team_name),
+            "%s", nonzero(data.team_year),
+            "%d", data.points_gained,
+            "%s", maybe(data.rebounder),
+            "%s", maybe(data.shooter),
+            "%s", maybe(data.blocked_by),
+            "%s", maybe(data.assist_by),
+            "%s", maybe(data.turnover_by),
+            "%s", maybe(data.steal_by),
+            "%s", maybe(data.double_foul_by_1),
+            "%s", maybe(data.double_foul_by_2),
+            "%s", maybe(data.foul_by),
+            "%s", maybe(data.foul_drawn_by),
+            "%s", maybe(data.foul_by_coach),
+            "%s", maybe(data.sub_out),
+            "%s", maybe(data.sub_in),
+            "%s", maybe(data.violation_by),
+            "%s", maybe(data.ejected),
+            "%s", maybe(data.coach_ejected),
+            "%s", nonzero(data.shot_result),
+            "%s", nonzero(data.clock_event),
+            "%s", nonzero(data.rebound_type),
+            "%s", itob(data.team_rebound),
+            "%s", maybe(data.jump_ball_player_1),
+            "%s", maybe(data.jump_ball_player_2),
+            "%s", maybe(data.jump_ball_winner),
+            "%s", nonzero(data.shot_type),
+            "%s", nonneg(data.shot_distance),
+            "%s", nonzero(data.free_throw_number),
+            "%s", nonzero(data.free_throw_total),
+            "%s", itob(data.team_turnover),
+            "%s", itob(data.team_foul),
+            "%s", itob(data.double_foul),
+            "%s", nonzero(data.shot_value),
+            "%s", nonzero(data.turnover_type),
+            "%s", itob(data.team_ejected),
+            "%s", nonzero(data.oob_type),
+            "%s", nonzero(data.foul_type),
+            "%s", nonzero(data.tech_type),
+            "%s", nonzero(data.timeout_type),
+            "%s", itob(data.team_violation),
+            "%s", nonzero(data.violation_type),
+            "%s", nonzero(data.replay_type),
+            "%s", nonzero(data.replay_result)
         );
 #endif
         init();
