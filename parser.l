@@ -13,7 +13,7 @@ digit   [0-9]
 %%
                /* RULES */
 
-{digit}+:{digit}+\.{digit}+     {
+{digit}+:{digit}+\.{digit}      {
                                     int min, sec, dec;
                                     sscanf(yytext, "%d:%d.%d", &min, &sec, &dec);
                                     yylval.x = (min * 60) + sec + (dec / 10.0);
