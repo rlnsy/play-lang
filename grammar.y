@@ -138,13 +138,15 @@
             shot_count++;
             data.shot_num = shot_count;
             printf("SHOT ");
-            print_values(15,
+            print_values(17,
             "%d", data.game_year,
             "%d", data.game_month,
             "%d", data.game_day,
             "%s", quote(data.game_home),
             "%d", data.game_num,
             "%d", data.shot_num,
+            "%d", data.quarter,
+            "%f", data.time,
             "%s", maybe(data.shooter),
             "%s", maybe(data.blocked_by),
             "%s", maybe(data.assist_by),

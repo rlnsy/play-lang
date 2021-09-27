@@ -5,6 +5,8 @@ create table shots (
     game_home varchar(3) not null,
     game_num tinyint unsigned not null,
     shot_num integer not null,
+    quarter tinyint unsigned,
+    time real,
     shooter varchar(20) null,
     blocked_by varchar(20) null,
     assist_by varchar(20) null,
