@@ -459,14 +459,17 @@ doublefoul: DOUBLE foulname
             ;
 
 timeout:    OFFICIAL_TIMEOUT                    { data.timeout_type = TIMEOUT_TYPE_OFFICIAL; }
-            | team TWENTY_SECOND_TIMEOUT        { data.timeout_type = TIMEOUT_TYPE_20_SEC; }
-            | team NO TIMEOUT
+            | timeoutteam TWENTY_SECOND_TIMEOUT        { data.timeout_type = TIMEOUT_TYPE_20_SEC; }
+            | timeoutteam NO TIMEOUT
             | fulltimeout                       { data.timeout_type = TIMEOUT_TYPE_FULL; }
             ;
 
+timeoutteam: team
+            | team SLASH team
+            ;
+
 fulltimeout: FULL_TIMEOUT
-            | team FULL_TIMEOUT
-            | team SLASH team FULL_TIMEOUT
+            | timeoutteam FULL_TIMEOUT
             ;
 
 team:       STR
