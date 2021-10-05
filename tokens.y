@@ -20,7 +20,7 @@
 %token TEAM;
 %token TURNOVER;
 %token SHOT_CLOCK;
-%token BAD_PASS;
+%token BAD_PASS STOLEN_PASS
 %token STEAL;
 %token LOST_BALL;
 %token JUMP_SHOT
@@ -100,3 +100,5 @@
 %token SLASH
 %token PLAYER COACH
 %token UNKNOWN
+%token ISOLATION
+%token ELBOW

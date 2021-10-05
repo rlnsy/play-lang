@@ -70,6 +70,7 @@ assist                          return ASSIST;
 [tT]urnover                     return TURNOVER;
 shot\ clock                     return SHOT_CLOCK;
 bad\ pass                       return BAD_PASS;
+stolen\ pass                    return STOLEN_PASS;
 steal                           return STEAL;
 lost\ ball                      return LOST_BALL;
 hook\ shot                      return HOOK_SHOT;
@@ -112,7 +113,7 @@ enters\ the\ game\ for          return SUBSTITUTE;
 traveling                       return TRAVEL;
 (off|offensive)\ goaltending    return OFFENSIVE_GOALTEND;
 def\ goaltending                return DEFENSIVE_GOALTEND;
-[vV]iolation                    return VIOLATION;
+[vV]iolation\.?                 return VIOLATION;
 out\ of\ bounds                 return OUT_OF_BOUNDS;
 delay\ of\ game                 return DELAY_OF_GAME;
 [iI]nstant\ [rR]eplay           return INSTANT_REPLAY;
@@ -153,7 +154,8 @@ NA                              return NONE;
 player                          return PLAYER;
 coach                           return COACH;
 unknown                         return UNKNOWN;
-
+isolation                       return ISOLATION;
+[eE]lbow                        return ELBOW;
 
     /* This is an arbitrary length string of allowed characters */
 [^:; \(\)\t\n\|\/]+     {

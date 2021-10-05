@@ -55,6 +55,7 @@
 #define FOUL_TYPE_PUNCHING              16
 #define FOUL_TYPE_CLEAR_PATH            17
 #define FOUL_TYPE_TECHNICAL             19
+#define FOUL_TYPE_ELBOW                 20
 
 #define TECH_TYPE_TAUNTING         1
 #define TECH_TYPE_DELAY            2
@@ -87,6 +88,7 @@
 #define VIOLATION_TYPE_SWINGIN_ELBOWS  18
 #define VIOLATION_TYPE_SCORE_OPP_BSKT  19
 #define VIOLATION_TYPE_ENTR_BSKT_BELOW 20
+#define VIOLATION_TYPE_ISOLATION       21
 
 #define REPLAY_TYPE_CHALLENGE           1
 #define REPLAY_TYPE_REQUEST             2

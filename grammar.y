@@ -392,7 +392,7 @@ pturnoverc:  bad_pass                                       { data.turnover_type
             | NO                            { BAD; }
             ;
 
-bad_pass:   BAD_PASS
+bad_pass:   BAD_PASS | STOLEN_PASS
 
 steal:      STEAL BY player                                 { data.steal_by = $3; }
             ;
@@ -403,6 +403,10 @@ foul:       foulname BY foulplrs
                                                                 data.double_foul = 1;
                                                                 data.double_foul_by_1 = $3,
                                                                 data.double_foul_by_2 = $5;
+                                                            }
+            | doublefoul BY player               {
+                                                                data.double_foul = 1;
+                                                                data.double_foul_by_1 = $3;
                                                             }
             | doublefoul BY TEAM                            { data.double_foul = 1; data.team_foul = 1; }
             | foulname BY coach                        { data.foul_type = FOUL_TYPE_TECHNICAL; data.foul_by_coach = $3; }
@@ -430,6 +434,9 @@ foultype:   SHOOTING                                        { data.foul_type = F
             | PUNCHING                                      { data.foul_type = FOUL_TYPE_PUNCHING; }
             | CLEAR_PATH                                    { data.foul_type = FOUL_TYPE_CLEAR_PATH; }
             | techfoul                                      { data.foul_type = FOUL_TYPE_TECHNICAL; }
+            | ELBOW                                         {
+                data.foul_type = FOUL_TYPE_ELBOW;
+            }
             ;
 
 techfoul:   techtype TECHNICAL
@@ -488,6 +495,8 @@ violation:  VIOLATION BY TEAM teamv                            { data.team_viola
 teamv:      DELAY_OF_GAME                                      { data.violation_type = VIOLATION_TYPE_DELAY_OF_GAME; }
             | SHOT_CLOCK                                       { data.violation_type = VIOLATION_TYPE_SHOT_CLOCK; }
             | EXCESSIVE_TIMEOUT                                { data.violation_type = VIOLATION_TYPE_EXCESS_TIMEOUT; }
+            | ISOLATION VIOLATION                              { data.violation_type = VIOLATION_TYPE_ISOLATION; //https://www.youtube.com/watch?v=EatxB5b223w
+                                                                }
             | VIOLATION
             | playerv
             ;
