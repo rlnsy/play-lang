@@ -129,8 +129,7 @@
     void display() {
         parsed_count++;
 
-        if (data.quarter == 1 && data.time == 720 && !strcmp(data.play_type, PLAY_TYPE_JUMPBALL)) {
-            // this is the first play in a game
+        if (data.play_num == 1) {
             shot_count = 0;
         }
 
