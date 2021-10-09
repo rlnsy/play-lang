@@ -29,7 +29,7 @@
         int play_num;
         tinyuint quarter;
         real time;
-        tinyuint play_type;
+        text play_type;
         text team_name;
         int team_year;
         int shot_num;
@@ -50,14 +50,14 @@
         text violation_by;
         text ejected;
         text coach_ejected;
-        tinyuint shot_result;
-        tinyuint clock_event;
-        tinyuint rebound_type;
+        text shot_result;
+        text clock_event;
+        text rebound_type;
         boolean team_rebound;
         text jump_ball_player_1;
         text jump_ball_player_2;
         text jump_ball_winner;
-        tinyuint shot_type;
+        text shot_type;
         tinyuint shot_distance;
         tinyuint free_throw_number;
         tinyuint free_throw_total;
@@ -65,16 +65,16 @@
         boolean team_foul;
         boolean double_foul;
         tinyuint shot_value;
-        tinyuint turnover_type;
+        text turnover_type;
         boolean team_ejected;
-        tinyuint oob_type;
-        tinyuint foul_type;
-        tinyuint tech_type;
-        tinyuint timeout_type;
+        text oob_type;
+        text foul_type;
+        text tech_type;
+        text timeout_type;
         boolean team_violation;
-        tinyuint violation_type;
-        tinyuint replay_type;
-        tinyuint replay_result;
+        text violation_type;
+        text replay_type;
+        text replay_result;
     } data;
 
     void init() {
@@ -129,12 +129,12 @@
     void display() {
         parsed_count++;
 
-        if (data.quarter == 1 && data.time == 720 && data.play_type == PLAY_TYPE_JUMPBALL) {
+        if (data.quarter == 1 && data.time == 720 && !strcmp(data.play_type, PLAY_TYPE_JUMPBALL)) {
             // this is the first play in a game
             shot_count = 0;
         }
 
-        if (data.play_type == PLAY_TYPE_SHOTATT) {
+        if (!strcmp(data.play_type,PLAY_TYPE_SHOTATT)) {
             shot_count++;
             data.shot_num = shot_count;
             printf("SHOT ");
@@ -150,8 +150,8 @@
             "%s", maybe(data.shooter),
             "%s", maybe(data.blocked_by),
             "%s", maybe(data.assist_by),
-            "%s", nonzero(data.shot_result),
-            "%s", nonzero(data.shot_type),
+            "%s", maybe(data.shot_result),
+            "%s", maybe(data.shot_type),
             "%s", nonneg(data.shot_distance),
             "%s", nonzero(data.shot_value),
             "%s", NULL_TOKEN,
@@ -169,7 +169,7 @@
             "%d", data.play_num,
             "%d", data.quarter,
             "%f", data.time,
-            "%s", nonzero(data.play_type),
+            "%s", maybe(data.play_type),
             "%s", maybe(data.team_name),
             "%s", nonzero(data.team_year),
             "%d", data.points_gained,
@@ -186,8 +186,8 @@
             "%s", maybe(data.violation_by),
             "%s", maybe(data.ejected),
             "%s", maybe(data.coach_ejected),
-            "%s", nonzero(data.clock_event),
-            "%s", nonzero(data.rebound_type),
+            "%s", maybe(data.clock_event),
+            "%s", maybe(data.rebound_type),
             "%s", itob(data.team_rebound),
             "%s", maybe(data.jump_ball_player_1),
             "%s", maybe(data.jump_ball_player_2),
@@ -197,16 +197,16 @@
             "%s", itob(data.team_turnover),
             "%s", itob(data.team_foul),
             "%s", itob(data.double_foul),
-            "%s", nonzero(data.turnover_type),
+            "%s", maybe(data.turnover_type),
             "%s", itob(data.team_ejected),
-            "%s", nonzero(data.oob_type),
-            "%s", nonzero(data.foul_type),
-            "%s", nonzero(data.tech_type),
-            "%s", nonzero(data.timeout_type),
+            "%s", maybe(data.oob_type),
+            "%s", maybe(data.foul_type),
+            "%s", maybe(data.tech_type),
+            "%s", maybe(data.timeout_type),
             "%s", itob(data.team_violation),
-            "%s", nonzero(data.violation_type),
-            "%s", nonzero(data.replay_type),
-            "%s", nonzero(data.replay_result),
+            "%s", maybe(data.violation_type),
+            "%s", maybe(data.replay_type),
+            "%s", maybe(data.replay_result),
             "%s", nonzero(data.shot_num)
         );
         init();
