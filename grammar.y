@@ -133,11 +133,14 @@
             shot_count = 0;
         }
 
-        if (!strcmp(data.play_type,PLAY_TYPE_SHOTATT)) {
+        if (
+            !strcmp(data.play_type,PLAY_TYPE_SHOTATT) ||
+            !strcmp(data.play_type,PLAY_TYPE_FREE_THR)
+                ) {
             shot_count++;
             data.shot_num = shot_count;
             printf("SHOT ");
-            print_values(17,
+            print_values(15,
             "%d", data.game_year,
             "%d", data.game_month,
             "%d", data.game_day,
@@ -146,10 +149,8 @@
             "%d", data.shot_num,
             "%d", data.quarter,
             "%f", data.time,
-            "%s", maybe(data.shooter),
             "%s", maybe(data.blocked_by),
             "%s", maybe(data.assist_by),
-            "%s", maybe(data.shot_result),
             "%s", maybe(data.shot_type),
             "%s", nonneg(data.shot_distance),
             "%s", nonzero(data.shot_value),
@@ -159,7 +160,7 @@
         }
 
         printf("PLAY ");
-        print_values(47,
+        print_values(49,
             "%d", data.game_year,
             "%d", data.game_month,
             "%d", data.game_day,
@@ -172,6 +173,8 @@
             "%s", maybe(data.team_name),
             "%s", nonzero(data.team_year),
             "%d", data.points_gained,
+            "%s", maybe(data.shooter),
+            "%s", maybe(data.shot_result),
             "%s", maybe(data.rebounder),
             "%s", maybe(data.turnover_by),
             "%s", maybe(data.steal_by),
